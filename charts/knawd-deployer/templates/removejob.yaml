@@ -1,0 +1,61 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: knawd-deployer-remove-job
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    app.kubernetes.io/instance: {{ .Release.Name | quote }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+  annotations:
+    # This is what defines this resource as a hook. Without this line, the
+    # job is considered part of the release.
+    "helm.sh/hook": pre-delete
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    metadata:
+      labels:
+        app: knawd-deployer-removewasi-crun
+    spec:
+      restartPolicy: Never
+      hostPID: true
+      volumes:
+        - name: node-root
+          hostPath:
+            path: /
+        - name: entrypoint
+          configMap:
+            name: entrypoint
+            defaultMode: 0744
+      serviceAccountName: {{ include "knawd-deployer.serviceAccountName" . }}
+      containers:
+        - image: {{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          name: deploy-remove
+          env:
+            - name: VENDOR
+              value: {{ .Values.job.vendor | quote }}
+            - name: LIB_LOCATION
+              value: {{ .Values.job.libLocation | quote }}
+            - name: LOG_LEVEL
+              value: {{ .Values.job.logLevel | quote }}
+            - name: OCI_LOCATION
+              value: {{ .Values.job.ociLocation | quote }}
+            - name: OCI_NAME
+              value: {{ .Values.job.ociName | quote }}
+            - name: NODE_ROOT
+              value: {{ .Values.job.nodeRoot | quote }}
+            - name: IS_MICROK8S
+              value: {{ .Values.job.isMicroK8s | quote }}
+            - name: AUTO_RESTART
+              value: {{ .Values.job.autoRestart | quote }}
+            - name: CONFIG_LOCATION
+              value: {{ .Values.job.configLocation | quote }}
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - name: node-root
+              mountPath: /mnt/node-root/
+          command: ["/app/manager","remove"]

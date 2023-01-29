@@ -1,0 +1,13 @@
+job:
+  vendor: "rhel8"
+  libLocation: "/usr/lib64"
+  logLevel: "info"
+  ociLocation: "/usr/local/sbin"
+  configLocation: "/etc/crio"
+  autoRestart: true
+
+
+scc:
+  create: true
+  name: "knawd-deployer-scc"
+  rolename: "knawd-deployer-role"

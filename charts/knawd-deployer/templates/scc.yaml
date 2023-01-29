@@ -1,0 +1,24 @@
+{{- if .Values.scc.create }}
+kind: SecurityContextConstraints
+apiVersion: security.openshift.io/v1
+metadata:
+  annotations:
+    kubernetes.io/description: "allows pod to run as root, privileged and run nsenter"
+    "helm.sh/hook": pre-install
+  name: {{ .Values.scc.name }}
+allowPrivilegedContainer: true
+allowHostDirVolumePlugin: true
+allowHostIPC: false
+allowHostNetwork: false
+allowHostPID: true
+allowHostPorts: false
+readOnlyRootFilesystem: false
+runAsUser:
+  type: RunAsAny
+seLinuxContext:
+  type: RunAsAny
+fsGroup:
+  type: RunAsAny
+supplementalGroups:
+  type: RunAsAny
+{{- end}}
