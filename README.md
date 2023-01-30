@@ -1,12 +1,13 @@
 # deployer
 
-Deploy a WASM enabled crun into kubernetes. See https://knawd.dev for more information.
+Deploy a WASM enabled crun into kubernetes to enable running WASM libraries in container infrastructure.
+
+See https://knawd.dev for more information.
 
 
 [![build status](https://github.com/knawd/deployer/workflows/CI/badge.svg)](https://github.com/knawd/deployer/actions)
 [![Docker Repository on Quay](https://quay.io/repository/knawd/deployer/status "Docker Repository on Quay")](https://quay.io/repository/knawd/deployer)
 [![OpenSSF Best Practices](https://bestpractices.coreinfrastructure.org/projects/6966/badge)](https://bestpractices.coreinfrastructure.org/projects/6966)
-[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/knawd-deployer)](https://artifacthub.io/packages/search?repo=knawd-deployer)
 
 ## Overview
 
