@@ -2,11 +2,12 @@ use env_logger::Env;
 use log::info;
 use std::env;
 use std::path::Path;
+use std::{thread, time};
 
 // keeping this incase additional libraries need copying
 static LIB_FILES: [&str; 1] = ["libwasmedge.so.0"];
 static VENDOR_BASE: &str = "vendor";
-
+#[allow(clippy::while_immutable_condition)]
 fn main() -> Result<(), std::io::Error> {
     // An output test so the build can be validated
     if env::args().count() >= 2 && env::args().nth(1) != Some("remove".to_string()) {
@@ -52,7 +53,11 @@ fn main() -> Result<(), std::io::Error> {
         .to_lowercase()
         .parse()
         .unwrap_or(false);
-
+    let loopi: bool = env::var("LOOP")
+        .unwrap_or_else(|_| "true".to_string())
+        .to_lowercase()
+        .parse()
+        .unwrap_or(true);
     info!(
         "Starting manager with vendor: {} isMicroK8s: {} autorestart: {} node_root: {}",
         vendor, is_micro_k8s, auto_restart, node_root
@@ -122,6 +127,10 @@ fn main() -> Result<(), std::io::Error> {
         }
         _ => panic!("unknown vendor {vendor} use either `rhel8` `ubuntu_20_04` or `ubuntu_18_04`"),
     };
+    let delay = time::Duration::from_millis(1000);
+    while loopi {
+        thread::sleep(delay);
+    }
     Ok(())
 }
 
