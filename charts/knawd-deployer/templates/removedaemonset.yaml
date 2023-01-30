@@ -1,5 +1,5 @@
-apiVersion: batch/v1
-kind: Job
+apiVersion: apps/v1
+kind: DaemonSet
 metadata:
   name: knawd-deployer-remove-job
   labels:
@@ -9,15 +9,18 @@ metadata:
     helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
   annotations:
     # This is what defines this resource as a hook. Without this line, the
-    # job is considered part of the release.
+    #.daemonset.is considered part of the release.
     "helm.sh/hook": pre-delete
     "helm.sh/hook-weight": "-5"
     "helm.sh/hook-delete-policy": hook-succeeded
 spec:
+  selector:
+    matchLabels:
+      name: {{ .Values.daemonset.label }}
   template:
     metadata:
       labels:
-        app: knawd-deployer-removewasi-crun
+        name: {{ .Values.daemonset.label }}
     spec:
       restartPolicy: Never
       hostPID: true
@@ -36,23 +39,25 @@ spec:
           name: deploy-remove
           env:
             - name: VENDOR
-              value: {{ .Values.job.vendor | quote }}
+              value: {{ .Values.daemonset.vendor | quote }}
             - name: LIB_LOCATION
-              value: {{ .Values.job.libLocation | quote }}
+              value: {{ .Values.daemonset.libLocation | quote }}
             - name: LOG_LEVEL
-              value: {{ .Values.job.logLevel | quote }}
+              value: {{ .Values.daemonset.logLevel | quote }}
             - name: OCI_LOCATION
-              value: {{ .Values.job.ociLocation | quote }}
+              value: {{ .Values.daemonset.ociLocation | quote }}
             - name: OCI_NAME
-              value: {{ .Values.job.ociName | quote }}
+              value: {{ .Values.daemonset.ociName | quote }}
             - name: NODE_ROOT
-              value: {{ .Values.job.nodeRoot | quote }}
+              value: {{ .Values.daemonset.nodeRoot | quote }}
             - name: IS_MICROK8S
-              value: {{ .Values.job.isMicroK8s | quote }}
+              value: {{ .Values.daemonset.isMicroK8s | quote }}
             - name: AUTO_RESTART
-              value: {{ .Values.job.autoRestart | quote }}
+              value: {{ .Values.daemonset.autoRestart | quote }}
             - name: CONFIG_LOCATION
-              value: {{ .Values.job.configLocation | quote }}
+              value: {{ .Values.daemonset.configLocation | quote }}
+            - name: LOOP
+              value: true
           securityContext:
             privileged: true
           volumeMounts:

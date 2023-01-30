@@ -1,4 +1,4 @@
-job:
+daemonset:
   vendor: "rhel8"
   libLocation: "/usr/lib64"
   logLevel: "info"
