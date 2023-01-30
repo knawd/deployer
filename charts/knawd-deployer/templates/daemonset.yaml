@@ -11,7 +11,7 @@ spec:
       labels:
         name: {{ .Values.daemonset.label }}
     spec:
-      restartPolicy: Never
+      restartPolicy: Always
       hostPID: true
       volumes:
         - name: node-root
@@ -46,7 +46,7 @@ spec:
             - name: CONFIG_LOCATION
               value: {{ .Values.daemonset.configLocation | quote }}
             - name: LOOP
-              value: true
+              value: "true"
           securityContext:
             privileged: true
           volumeMounts:
