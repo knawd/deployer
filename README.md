@@ -1,6 +1,6 @@
 # deployer
 
-Deploy a WASM enabled crun into kubernetes to enable running WASM libraries in container infrastructure.
+Deploy a WASM enabled crun into kubernetes to enable running WASM libraries in kubernetes and knative.
 
 See https://knawd.dev for more information.
 
@@ -37,9 +37,7 @@ N.B. Red Hat Core OS based instances have still to be tested and we expect some 
 
 ## Install
 
-If you are just want to get a test cluster up and running then you could start with [the helm chart README.md](https://github.com/knawd/deployer/blob/main/charts/knawd-deployer/README.md).
-
-For a production install please refer to the [operator repo](https://github.com/knawd/operator)
+Please see the instructions in [the helm chart README](https://github.com/knawd/deployer/blob/main/charts/knawd-deployer/README.md).
 
 ## Contributions
 

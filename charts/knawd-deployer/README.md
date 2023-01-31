@@ -1,9 +1,9 @@
 # knawd-deployer
 
-An operator to configure a kubernetes cluster to run WASM services.
+An chart to configure a kubernetes cluster to run WASM services.
 
 ## Caution
-Installing with this helm chart will reboot the CRI runtime on the service.
+Installing with this helm chart will reboot the CRI runtime on the cluster.
 If you would prefer to manually restart the CRI service run this chart with the `--set job.autorestart=false` option
 
 ## Ubuntu 18.04
@@ -32,7 +32,7 @@ helm install knawd-deployer --create-namespace --namespace knawd -f rhel8-values
 ## Knative
 
 ```
-By default patching knative is enabled. If knative is not installed on the cluster the service will log an error but continue to run
+By default patching knative is enabled. If knative is not installed on the cluster this service will log an error but continue to run
 If you wish to use this chart to obtain a crun enabled cluster but without knative running use `-set daemonset.patchKnative=false`.
 ```
 
