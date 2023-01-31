@@ -1,5 +1,5 @@
 use env_logger::Env;
-use log::info;
+use log::{error, info};
 use std::env;
 use std::path::Path;
 use std::{thread, time};
@@ -8,7 +8,8 @@ use std::{thread, time};
 static LIB_FILES: [&str; 1] = ["libwasmedge.so.0"];
 static VENDOR_BASE: &str = "vendor";
 #[allow(clippy::while_immutable_condition)]
-fn main() -> Result<(), std::io::Error> {
+#[tokio::main]
+async fn main() -> Result<(), std::io::Error> {
     // An output test so the build can be validated
     if env::args().count() >= 2 && env::args().nth(1) != Some("remove".to_string()) {
         println!("Manager 0.1 by Anton Whalley");
@@ -54,6 +55,11 @@ fn main() -> Result<(), std::io::Error> {
         .parse()
         .unwrap_or(false);
     let loopi: bool = env::var("LOOP")
+        .unwrap_or_else(|_| "true".to_string())
+        .to_lowercase()
+        .parse()
+        .unwrap_or(true);
+    let patch_knative: bool = env::var("PATCH_KNATIVE")
         .unwrap_or_else(|_| "true".to_string())
         .to_lowercase()
         .parse()
@@ -105,6 +111,14 @@ fn main() -> Result<(), std::io::Error> {
                 "unknown vendor {vendor} use either `rhel8` `ubuntu_20_04` or `ubuntu_18_04`"
             ),
         };
+        if patch_knative {
+            match manager::set_runtimeclassname("disabled").await {
+                Ok(_v) => {}
+                Err(e) => {
+                    error!("Failed to patch knative: {e}\n Consider running :\n kubectl patch configmap/config-features -n knative-serving --type merge --patch '{{\"data\":{{\"kubernetes.podspec-runtimeclassname\":\"disabled\"}}}}'")
+                }
+            }
+        }
         return Ok(());
     }
 
@@ -132,6 +146,16 @@ fn main() -> Result<(), std::io::Error> {
         }
         _ => panic!("unknown vendor {vendor} use either `rhel8` `ubuntu_20_04` or `ubuntu_18_04`"),
     };
+
+    if patch_knative {
+        match manager::set_runtimeclassname("enabled").await {
+            Ok(_v) => {}
+            Err(e) => {
+                error!("Failed to patch knative: {e}\n Consider running :\n kubectl patch configmap/config-features -n knative-serving --type merge --patch '{{\"data\":{{\"kubernetes.podspec-runtimeclassname\":\"enabled\"}}}}'")
+            }
+        }
+    }
+
     let delay = time::Duration::from_millis(1000);
     while loopi {
         thread::sleep(delay);
