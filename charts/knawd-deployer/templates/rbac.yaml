@@ -33,7 +33,6 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: knawd-cluster-role
-  namespace: knative-serving
   annotations:
     kubernetes.io/description: "ClusterRole for Knative Patch"
     "helm.sh/hook": pre-install
@@ -45,20 +44,23 @@ rules:
     resources:
       - configmaps
     verbs:
-      - patch
+      - delete
       - get
+      - list
+      - patch
+      - update
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name:  knawd-cluster-role-binding
-  namespace: knative-serving
   annotations:
     kubernetes.io/description: "ClusterRoleBinding for Knative Patch"
     "helm.sh/hook": pre-install
 subjects:
   - kind: ServiceAccount
     name: {{ include "knawd-deployer.serviceAccountName" . }}
+    namespace: {{ .Release.Namespace }} 
 roleRef:
   kind: ClusterRole
   name: knawd-cluster-role
