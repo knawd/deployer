@@ -20,7 +20,14 @@ pub fn copy_to(
     file_name: &str,
 ) -> Result<(), std::io::Error> {
     let location = format!("/{vendor_base}/{vendor}/{file_name}");
-    let destination = format!("/{destination_base}/{file_name}");
+
+    // Really software development is just about how neatly you can throw things away.
+    // Here we are selecting which type of crun to deploy
+    let destination: String = match file_name {
+        "crun-wasmedge" | "crun-wasmtime" => format!("/{destination_base}/crun"),
+        _ => format!("/{destination_base}/{file_name}"),
+    };
+
     info!("Copying from {} to {}", location, destination);
     fs::copy(location, destination)?;
     Ok(())

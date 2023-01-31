@@ -13,7 +13,7 @@ daemonset:
   logLevel: "info"
   ociLocation: "/usr/local/sbin"
   configLocation: "/etc/containerd"
-  ociName: "crun"
+  ociType: "crun-wasmedge"
   nodeRoot: "/mnt/node-root"
   isMicroK8s: false
   autoRestart: true
