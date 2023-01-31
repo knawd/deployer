@@ -11,9 +11,9 @@ sources:
 
 type: application
 
-version: 1.0.0-alpha
+version: v1.0.0-beta
 
-appVersion: "1.0.0-alpha"
+appVersion: "v1.0.0-beta"
 
 # icon: https://raw.githubusercontent.com/No9/core-dump-handler/master/assets/handle-with-care-svgrepo-com.svg
 
@@ -25,7 +25,7 @@ maintainers:
 annotations:
   artifacthub.io/images: |
     - name: knawd-deployer
-      image: quay.io/knawd/deployer:v1.0.0-alpha
+      image: quay.io/knawd/deployer:v1.0.0-beta
   artifacthub.io/license: MIT
   artifacthub.io/signKey: |
     fingerprint: BED079E67FD431E45301B1C9949E671B46AC8A34
