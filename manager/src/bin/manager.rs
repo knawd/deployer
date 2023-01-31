@@ -38,10 +38,7 @@ async fn main() -> Result<(), std::io::Error> {
         env::var("OCI_LOCATION").expect("OCI_LOCATION env should be set")
     );
 
-    let oci_type = format!(
-        "{}",
-        env::var("OCI_TYPE").expect("OCI_TYPE env should be set")
-    );
+    let oci_type = env::var("OCI_TYPE").expect("OCI_TYPE env should be set");
 
     no_path_exit(&node_root);
     no_path_exit(&lib_location);
