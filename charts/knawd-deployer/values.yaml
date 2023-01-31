@@ -1,4 +1,3 @@
-replicaCount: 1
 
 image:
   registry: quay.io
@@ -18,7 +17,7 @@ daemonset:
   nodeRoot: "/mnt/node-root"
   isMicroK8s: false
   autoRestart: true
-
+  patchKnative: true
 
 scc:
   create: false
