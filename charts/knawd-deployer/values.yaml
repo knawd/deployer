@@ -1,9 +1,8 @@
-replicaCount: 1
 
 image:
   registry: quay.io
   repository: knawd/deployer
-  tag: latest
+  tag: knative-config
   pullPolicy: Always
 
 daemonset:
@@ -18,7 +17,7 @@ daemonset:
   nodeRoot: "/mnt/node-root"
   isMicroK8s: false
   autoRestart: true
-
+  patchKnative: true
 
 scc:
   create: false

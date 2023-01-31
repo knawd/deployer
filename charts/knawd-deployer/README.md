@@ -30,10 +30,10 @@ helm install knawd-deployer --create-namespace --namespace knawd -f rhel8-values
 ```
 
 ## Knative
-As Helm doesn't support patching you will need to run the following command
 
 ```
-kubectl patch configmap/config-features -n knative-serving --type merge --patch '{"data":{"kubernetes.podspec-runtimeclassname":"enabled"}}'
+By default patching knative is enabled. If knative is not installed on the cluster the service will log an error but continue to run
+If you wish to use this chart to obtain a crun enabled cluster but without knative running use `-set daemonset.patchKnative=false`.
 ```
 
 ## Values
@@ -49,7 +49,7 @@ image:
   tag: The tag in the repository where the image is located used to specifiy a custom image  (default: latest)
   pullPolicy: The pull policy for the image (default: Always)
 
-job:
+daemonset:
 
   name: The name of the job (default: "knawd-deployer")
 
@@ -70,3 +70,5 @@ job:
   isMicroK8s: Is this a microK8s installation (default: false)
 
   autoRestart: Should the deployer automatically restart the CRI service? Required for the config to be applied (default: true)
+
+  patchKnative: Runs the patch to enable setting the runtime in a knative service definition.

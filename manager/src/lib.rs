@@ -1,10 +1,17 @@
+use k8s_openapi::api::core::v1::ConfigMap;
 use log::{debug, info};
+use serde_json::json;
 use std::fs;
 use std::io::Read;
 use std::io::Write;
 use std::process::Command;
 use std::process::Stdio;
 use toml_edit::{value, Array, Document, Item, Table};
+
+use kube::{
+    api::{Api, Patch, PatchParams},
+    Client,
+};
 
 pub fn copy_to(
     vendor_base: &str,
@@ -146,6 +153,27 @@ pub fn restart_oci_runtime(
 
     let result = run_command_text(args, path);
     info!("{:?}", result);
+    Ok(())
+}
+
+pub async fn set_runtimeclassname(val: &str) -> anyhow::Result<()> {
+    update_knative_configmap("kubernetes.podspec-runtimeclassname", val).await
+}
+pub async fn update_knative_configmap(key: &str, val: &str) -> anyhow::Result<()> {
+    let client = Client::try_default().await?;
+    let configmaps: Api<ConfigMap> = Api::namespaced(client, "knative-serving");
+
+    info!("Setting knative kubernetes.podspec-runtimeclassname in knative-serving");
+    let patch = json!({"data":{key: val}});
+    let patchparams = PatchParams::default();
+    let p_patched = configmaps
+        .patch("config-features", &patchparams, &Patch::Merge(&patch))
+        .await?;
+    let patch_response = p_patched.data.unwrap();
+    let isenabled = patch_response
+        .get("kubernetes.podspec-runtimeclassname")
+        .unwrap();
+    info!("knative kubernetes.podspec-runtimeclassname: {isenabled:?}");
     Ok(())
 }
 

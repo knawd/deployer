@@ -47,6 +47,8 @@ spec:
               value: {{ .Values.daemonset.configLocation | quote }}
             - name: LOOP
               value: "true"
+            - name: PATCH_KNATIVE
+              value: {{ .Values.daemonset.patchKnative | quote }}
           securityContext:
             privileged: true
           volumeMounts:
