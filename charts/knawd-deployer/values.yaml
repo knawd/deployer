@@ -2,7 +2,7 @@
 image:
   registry: quay.io
   repository: knawd/deployer
-  tag: knative-config
+  tag: v1.0.0-beta
   pullPolicy: Always
 
 daemonset:
