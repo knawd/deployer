@@ -33,7 +33,7 @@ The deployment is performed copying files to 3 locations on each node:
 
 |Release|WASMEdge|WASMtime|crun|Ubuntu|OpenShift|
 |---|---|---|---|---|---|
-|v1.0.0-beta|0.11.2|5.0.0|[main](https://github.com/containers/crun/commit/26fe1383a05279935e67ee31e7ff10c43e7d87ea)|18.04, 20.04|4.10, 4.11|
+|v1.0.0-gamma|0.11.2|5.0.0|[main](https://github.com/containers/crun/commit/26fe1383a05279935e67ee31e7ff10c43e7d87ea)|18.04, 20.04|4.10, 4.11|
 |v1.0.0-beta|0.11.2|N/A|[main](https://github.com/containers/crun/commit/26fe1383a05279935e67ee31e7ff10c43e7d87ea)|18.04, 20.04|4.10, 4.11|
 |v1.0.0-alpha|0.11.2|N/A|[main](https://github.com/containers/crun/commit/26fe1383a05279935e67ee31e7ff10c43e7d87ea)|18.04, 20.04|4.10, 4.11|
 
