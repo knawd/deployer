@@ -1,3 +1,0 @@
-1. Test the deployment by running
-
-helm test knawd-deployer -n {{ .Release.Namespace }} 
