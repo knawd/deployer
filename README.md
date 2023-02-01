@@ -8,6 +8,8 @@ See https://knawd.dev for more information.
 [![build status](https://github.com/knawd/deployer/workflows/CI/badge.svg)](https://github.com/knawd/deployer/actions)
 [![Docker Repository on Quay](https://quay.io/repository/knawd/deployer/status "Docker Repository on Quay")](https://quay.io/repository/knawd/deployer)
 [![OpenSSF Best Practices](https://bestpractices.coreinfrastructure.org/projects/6966/badge)](https://bestpractices.coreinfrastructure.org/projects/6966)
+[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/deployer)](https://artifacthub.io/packages/search?repo=deployer)
+
 
 ## Overview
 
@@ -29,9 +31,12 @@ The deployment is performed copying files to 3 locations on each node:
 
 ## Supported Versions
 
-|Release|WASMEdge|crun|Ubuntu|OpenShift|
-|---|---|---|---|---|
-|v1.0.0-alpha|0.11.2|[main](https://github.com/containers/crun/commit/26fe1383a05279935e67ee31e7ff10c43e7d87ea)|18.04, 20.04|4.10, 4.11|
+|Release|WASMEdge|WASMtime|crun|Ubuntu|OpenShift|
+|---|---|---|---|---|---|
+|v1.0.0-beta|0.11.2|5.0.0|[main](https://github.com/containers/crun/commit/26fe1383a05279935e67ee31e7ff10c43e7d87ea)|18.04, 20.04|4.10, 4.11|
+|v1.0.0-beta|0.11.2|N/A|[main](https://github.com/containers/crun/commit/26fe1383a05279935e67ee31e7ff10c43e7d87ea)|18.04, 20.04|4.10, 4.11|
+|v1.0.0-alpha|0.11.2|N/A|[main](https://github.com/containers/crun/commit/26fe1383a05279935e67ee31e7ff10c43e7d87ea)|18.04, 20.04|4.10, 4.11|
+
 
 N.B. Red Hat Core OS based instances have still to be tested and we expect some issues modifying the crio config and copying the WASM libs to the host.
 
