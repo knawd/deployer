@@ -6,6 +6,9 @@ on:
       - main
     paths:
       - charts/**
+    paths-ignore:
+      - "**/docs/**"
+      - "**.md"
 
 
 jobs:
