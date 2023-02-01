@@ -35,8 +35,10 @@ async fn main() -> Result<(), std::io::Error> {
     let oci_location = format!(
         "{}{}",
         node_root,
-        env::var("OCI_LOCATION").expect("OCI_LOCATION")
+        env::var("OCI_LOCATION").expect("OCI_LOCATION env should be set")
     );
+
+    let oci_type = env::var("OCI_TYPE").expect("OCI_TYPE env should be set");
 
     no_path_exit(&node_root);
     no_path_exit(&lib_location);
@@ -122,7 +124,7 @@ async fn main() -> Result<(), std::io::Error> {
         return Ok(());
     }
 
-    manager::copy_to(VENDOR_BASE, oci_location.as_str(), &vendor, "crun")?;
+    manager::copy_to(VENDOR_BASE, oci_location.as_str(), &vendor, &oci_type)?;
     match vendor.as_str() {
         "rhel8" => {
             for file_name in &LIB_FILES {

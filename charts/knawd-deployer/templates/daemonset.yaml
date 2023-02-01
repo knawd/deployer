@@ -35,8 +35,8 @@ spec:
               value: {{ .Values.daemonset.logLevel | quote }}
             - name: OCI_LOCATION
               value: {{ .Values.daemonset.ociLocation | quote }}
-            - name: OCI_NAME
-              value: {{ .Values.daemonset.ociName | quote }}
+            - name: OCI_TYPE
+              value: {{ .Values.daemonset.ociType | quote }}
             - name: NODE_ROOT
               value: {{ .Values.daemonset.nodeRoot | quote }}
             - name: IS_MICROK8S

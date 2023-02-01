@@ -1,7 +1,7 @@
 apiVersion: v2
 name: knawd-deployer
 description: A helm chart to deploy a WASI enabled crun.
-type: application
+
 keywords:
   - wasi
   - wasm
@@ -11,9 +11,9 @@ sources:
 
 type: application
 
-version: v1.0.0-beta
+version: v1.0.0-gamma
 
-appVersion: "v1.0.0-beta"
+appVersion: "v1.0.0-gamma"
 
 # icon: https://raw.githubusercontent.com/No9/core-dump-handler/master/assets/handle-with-care-svgrepo-com.svg
 

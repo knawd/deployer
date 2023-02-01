@@ -63,9 +63,9 @@ daemonset:
 
   configLocation: The location of the OCI configuration on the node (default: "/etc/containerd")
 
-  ociName: The name of the OCI Runtime file. Currently not in use (default: "crun")
+  ociType: The type of the OCI Runtime to deploy. Currently "crun-wasmedge" and "crun-wasmtime" are supported (default: "crun-wasmedge")
 
-  nodeRoot: The location in the deployer where the node file system is mounted (default: "/mnt/node-root") 
+  nodeRoot: The location in the deployer where the node file system is mounted (default: "/mnt/node-root")
 
   isMicroK8s: Is this a microK8s installation (default: false)
 

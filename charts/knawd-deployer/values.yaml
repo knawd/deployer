@@ -1,8 +1,7 @@
-
 image:
   registry: quay.io
   repository: knawd/deployer
-  tag: v1.0.0-beta
+  tag: v1.0.0-gamma
   pullPolicy: Always
 
 daemonset:
@@ -13,7 +12,7 @@ daemonset:
   logLevel: "info"
   ociLocation: "/usr/local/sbin"
   configLocation: "/etc/containerd"
-  ociName: "crun"
+  ociType: "crun-wasmedge"
   nodeRoot: "/mnt/node-root"
   isMicroK8s: false
   autoRestart: true
