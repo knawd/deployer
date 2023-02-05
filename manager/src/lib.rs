@@ -33,7 +33,10 @@ pub fn copy_to(
     Ok(())
 }
 
-pub fn update_containerd_config(path: &str, full_oci_location: &str) -> Result<toml_edit::Document, std::io::Error> {
+pub fn update_containerd_config(
+    path: &str,
+    full_oci_location: &str,
+) -> Result<toml_edit::Document, std::io::Error> {
     let conf = generate_containerd_config(path, full_oci_location)?;
     let value: toml_edit::easy::Value =
         toml_edit::easy::from_str(conf.to_string().as_str()).unwrap();
@@ -51,7 +54,10 @@ pub fn update_containerd_config(path: &str, full_oci_location: &str) -> Result<t
     Ok(conf)
 }
 
-pub fn update_crio_config(path: &str, full_oci_location: &str) -> Result<toml_edit::Document, std::io::Error> {
+pub fn update_crio_config(
+    path: &str,
+    full_oci_location: &str,
+) -> Result<toml_edit::Document, std::io::Error> {
     info!("Generating crio config");
     let conf = generate_crio_config(path, full_oci_location)?;
 
@@ -71,7 +77,10 @@ pub fn update_crio_config(path: &str, full_oci_location: &str) -> Result<toml_ed
     Ok(conf)
 }
 
-pub fn generate_crio_config(path: &str, full_oci_location: &str) -> Result<toml_edit::Document, std::io::Error> {
+pub fn generate_crio_config(
+    path: &str,
+    full_oci_location: &str,
+) -> Result<toml_edit::Document, std::io::Error> {
     info!("Reading location: {}", path);
     let content = std::fs::read_to_string(path)?;
 
@@ -91,7 +100,10 @@ pub fn generate_crio_config(path: &str, full_oci_location: &str) -> Result<toml_
     Ok(conf)
 }
 
-pub fn generate_containerd_config(path: &str, full_oci_location: &str) -> Result<toml_edit::Document, std::io::Error> {
+pub fn generate_containerd_config(
+    path: &str,
+    full_oci_location: &str,
+) -> Result<toml_edit::Document, std::io::Error> {
     let content = std::fs::read_to_string(path)?;
 
     let mut conf = content
