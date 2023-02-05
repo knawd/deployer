@@ -3,5 +3,5 @@ target-branch: main
 chart-dirs:
   - charts
 helm-extra-args: "--timeout 600s"
-helm-extra-set-args: "--set=target=ubuntu20"
+helm-extra-set-args: "--set target=ubuntu20"
 check-version-increment: false
