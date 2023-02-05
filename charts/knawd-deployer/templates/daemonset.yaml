@@ -2,14 +2,16 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: knawd-deployer-daemonset
+  labels:
+  {{ include "knawd-deployer.labels" . | nindent 4 }}
 spec:
   selector:
     matchLabels:
-      name: {{ .Values.daemonset.label }}
+      name: knawd-deployer-ds
   template:
     metadata:
       labels:
-        name: {{ .Values.daemonset.label }}
+        name: knawd-deployer-ds
     spec:
       restartPolicy: Always
       hostPID: true
@@ -23,35 +25,42 @@ spec:
             defaultMode: 0744
       serviceAccountName: {{ include "knawd-deployer.serviceAccountName" . }}
       containers:
-        - image: {{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          name: deploy-remove
+        - image: quay.io/knawd/deployer:{{ .Values.tag }}
+          imagePullPolicy: Always
+          name: deploy
           env:
             - name: VENDOR
-              value: {{ .Values.daemonset.vendor | quote }}
+              value: {{ .Values.target }}
             - name: LIB_LOCATION
-              value: {{ .Values.daemonset.libLocation | quote }}
+              value: {{ include "knawd-deployer.libLocation" . }}
             - name: LOG_LEVEL
-              value: {{ .Values.daemonset.logLevel | quote }}
+              value: {{ .Values.logLevel }}
             - name: OCI_LOCATION
-              value: {{ .Values.daemonset.ociLocation | quote }}
+              value: {{ include "knawd-deployer.ociLocation" . }}
             - name: OCI_TYPE
-              value: {{ .Values.daemonset.ociType | quote }}
+              value: {{ .Values.ociType }}
             - name: NODE_ROOT
-              value: {{ .Values.daemonset.nodeRoot | quote }}
+              value: {{ include "knawd-deployer.nodeRoot" . }}
             - name: IS_MICROK8S
-              value: {{ .Values.daemonset.isMicroK8s | quote }}
+              value: {{ include "knawd-deployer.isMicroK8s" . }}
             - name: AUTO_RESTART
-              value: {{ .Values.daemonset.autoRestart | quote }}
+              value: {{ .Values.autoRestart | quote }}
             - name: CONFIG_LOCATION
-              value: {{ .Values.daemonset.configLocation | quote }}
+              value: {{ include "knawd-deployer.configLocation" . }}
             - name: LOOP
               value: "true"
             - name: PATCH_KNATIVE
-              value: {{ .Values.daemonset.patchKnative | quote }}
+              value: {{ .Values.patchKnative | quote }}
           securityContext:
             privileged: true
           volumeMounts:
             - name: node-root
               mountPath: /mnt/node-root/
           command: ["/app/manager"]
+          resources:
+            limits:
+              cpu: 100m
+              memory: 128Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi

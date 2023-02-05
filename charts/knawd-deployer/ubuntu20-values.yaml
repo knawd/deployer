@@ -1,3 +1,0 @@
-daemonset:
-  vendor: "ubuntu_20_04"
-  autoRestart: true

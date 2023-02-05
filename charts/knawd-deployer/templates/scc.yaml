@@ -1,11 +1,13 @@
-{{- if .Values.scc.create }}
+{{- if eq .Values.target "rhel8" }}
 kind: SecurityContextConstraints
 apiVersion: security.openshift.io/v1
 metadata:
+  labels:
+  {{ include "knawd-deployer.labels" . | nindent 4 }}
   annotations:
     kubernetes.io/description: "allows pod to run as root, privileged and run nsenter"
     "helm.sh/hook": pre-install
-  name: {{ .Values.scc.name }}
+  name: {{ include "knawd-deployer.sccName" . }}
 allowPrivilegedContainer: true
 allowHostDirVolumePlugin: true
 allowHostIPC: false

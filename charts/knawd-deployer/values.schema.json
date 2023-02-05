@@ -1,0 +1,65 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$ref": "#/definitions/Deployer",
+    "definitions": {
+        "Deployer": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "target": {
+                    "type": "string",
+                    "enum": [
+                        "rhel8",
+                        "ubuntu18",
+                        "ubuntu20",
+                        "microk8s"
+                    ],
+                    "default": "rhel8"
+                },
+                "tag": {
+                    "type": "string",
+                    "enum": [
+                        "v1.0.0-gamma",
+                        "v1.0.0-theta",
+                        "latest"
+                    ],
+                    "default": "latest"
+                },
+                "autoRestart": {
+                    "type": "boolean"
+                },
+                "logLevel": {
+                    "type": "string",
+                    "enum": [
+                        "info",
+                        "warn",
+                        "error"
+                    ],
+                    "default": "info"
+                },
+                "ociType": {
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "crun-wasmedge",
+                            "crun-wasmtime"
+                        ]
+                    },
+                    "default": "crun-wasmedge"
+                },
+                "patchKnative": {
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "autoRestart",
+                "logLevel",
+                "ociType",
+                "patchKnative",
+                "tag",
+                "target"
+            ],
+            "title": "Knawd Deployer"
+        }
+    }
+}

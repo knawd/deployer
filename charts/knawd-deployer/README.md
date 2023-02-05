@@ -40,13 +40,20 @@ If you wish to use this chart to obtain a crun enabled cluster but without knati
 
 These are the values particular to the deployer service.
 
+target: The type of kubernetes cluster to be configured. Supported versions are ubuntu18, ubuntu20, microk8s rhel8 (default: rhel8)
+tag: The tag in the repository where the image is located used to specifiy a custom image  (default: latest)
+autoRestart: Should the deployer automatically restart the CRI service? Required for the config to be applied (default: true)
+logLevel: "info" #error #warn #debug
+ociType: "crun-wasmedge" #crun-wasmtime
+patchKnative: true
+
 image:
 
   registry: The registry where the image is stored used to specifiy a custom image (default: quay.io)
 
   repository: The repository in the registry where the image is located used to specifiy a custom image (default: knawd/deployer)
 
-  tag: The tag in the repository where the image is located used to specifiy a custom image  (default: latest)
+  
   pullPolicy: The pull policy for the image (default: Always)
 
 daemonset:
@@ -69,6 +76,6 @@ daemonset:
 
   isMicroK8s: Is this a microK8s installation (default: false)
 
-  autoRestart: Should the deployer automatically restart the CRI service? Required for the config to be applied (default: true)
+  
 
   patchKnative: Runs the patch to enable setting the runtime in a knative service definition.

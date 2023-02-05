@@ -1,22 +1,26 @@
-{{- if .Values.scc.create }}
+{{- if eq .Values.target "rhel8" }}
 ---
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: {{ .Values.scc.rolename }}
+  name: {{ include "knawd-deployer.roleName" . }}
+  labels:
+  {{ include "knawd-deployer.labels" . | nindent 4 }}
   annotations:
     kubernetes.io/description: "Role for configuring node"
     "helm.sh/hook": pre-install
 rules:
   - apiGroups: ["security.openshift.io"]
     resources: ["securitycontextconstraints"]
-    resourceNames: [{{ .Values.scc.name }}]
+    resourceNames: [{{ include "knawd-deployer.sccName" . }}]
     verbs: ["use"]
 ---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: {{ .Values.scc.rolename }}
+  name: {{ include "knawd-deployer.roleName" . }}
+  labels:
+  {{ include "knawd-deployer.labels" . | nindent 4 }}
   annotations:
     kubernetes.io/description: "RoleBinding for configuring node"
     "helm.sh/hook": pre-install
@@ -25,14 +29,16 @@ subjects:
     name: {{ include "knawd-deployer.serviceAccountName" . }}
 roleRef:
   kind: Role
-  name: {{ .Values.scc.rolename }}
+  name: {{ include "knawd-deployer.roleName" . }}
   apiGroup: rbac.authorization.k8s.io
-{{- if .Values.daemonset.patchKnative }}
+{{- if .Values.patchKnative }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: knawd-cluster-role
+  labels:
+  {{ include "knawd-deployer.labels" . | nindent 4 }}
   annotations:
     kubernetes.io/description: "ClusterRole for Knative Patch"
     "helm.sh/hook": pre-install
@@ -54,6 +60,8 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name:  knawd-cluster-role-binding
+  labels:
+  {{ include "knawd-deployer.labels" . | nindent 4 }}
   annotations:
     kubernetes.io/description: "ClusterRoleBinding for Knative Patch"
     "helm.sh/hook": pre-install
