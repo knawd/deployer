@@ -7,7 +7,7 @@ on:
     paths:
       - charts/**
     paths-ignore:
-      - "**.md" 
+      - "**.md"
 
 jobs:
   release:
