@@ -19,13 +19,13 @@ pub fn copy_to(
     vendor: &str,
     file_name: &str,
 ) -> Result<(), std::io::Error> {
-    let location = format!("/{vendor_base}/{vendor}/{file_name}");
+    let location = format!("{vendor_base}/{vendor}/{file_name}");
 
     // Really software development is just about how neatly you can throw things away.
     // Here we are selecting which type of crun to deploy
     let destination: String = match file_name {
-        "crun-wasmedge" | "crun-wasmtime" => format!("/{destination_base}/crun"),
-        _ => format!("/{destination_base}/{file_name}"),
+        "crun-wasmedge" | "crun-wasmtime" => format!("{destination_base}/crun"),
+        _ => format!("{destination_base}/{file_name}"),
     };
 
     info!("Copying from {} to {}", location, destination);
@@ -33,8 +33,8 @@ pub fn copy_to(
     Ok(())
 }
 
-pub fn update_containerd_config(path: &str) -> Result<toml_edit::Document, std::io::Error> {
-    let conf = generate_containerd_config(path)?;
+pub fn update_containerd_config(path: &str, full_oci_location: &str) -> Result<toml_edit::Document, std::io::Error> {
+    let conf = generate_containerd_config(path, full_oci_location)?;
     let value: toml_edit::easy::Value =
         toml_edit::easy::from_str(conf.to_string().as_str()).unwrap();
     let result = toml_edit::easy::to_string_pretty(&value).unwrap();
@@ -51,9 +51,9 @@ pub fn update_containerd_config(path: &str) -> Result<toml_edit::Document, std::
     Ok(conf)
 }
 
-pub fn update_crio_config(path: &str) -> Result<toml_edit::Document, std::io::Error> {
+pub fn update_crio_config(path: &str, full_oci_location: &str) -> Result<toml_edit::Document, std::io::Error> {
     info!("Generating crio config");
-    let conf = generate_crio_config(path)?;
+    let conf = generate_crio_config(path, full_oci_location)?;
 
     let value: toml_edit::easy::Value =
         toml_edit::easy::from_str(conf.to_string().as_str()).unwrap();
@@ -71,7 +71,7 @@ pub fn update_crio_config(path: &str) -> Result<toml_edit::Document, std::io::Er
     Ok(conf)
 }
 
-pub fn generate_crio_config(path: &str) -> Result<toml_edit::Document, std::io::Error> {
+pub fn generate_crio_config(path: &str, full_oci_location: &str) -> Result<toml_edit::Document, std::io::Error> {
     info!("Reading location: {}", path);
     let content = std::fs::read_to_string(path)?;
 
@@ -85,13 +85,13 @@ pub fn generate_crio_config(path: &str) -> Result<toml_edit::Document, std::io::
 
     let mut table = Table::default();
     table["runtime_type"] = value("oci");
-    table["runtime_path"] = value("/usr/local/sbin/crun");
+    table["runtime_path"] = value(full_oci_location);
     table["runtime_root"] = value("/run/crun");
     conf["crio"]["runtime"]["runtimes"]["crun"] = Item::Table(table);
     Ok(conf)
 }
 
-pub fn generate_containerd_config(path: &str) -> Result<toml_edit::Document, std::io::Error> {
+pub fn generate_containerd_config(path: &str, full_oci_location: &str) -> Result<toml_edit::Document, std::io::Error> {
     let content = std::fs::read_to_string(path)?;
 
     let mut conf = content
@@ -110,7 +110,7 @@ pub fn generate_containerd_config(path: &str) -> Result<toml_edit::Document, std
     table["pod_annotations"] = value(poda);
 
     let mut opt_table = Table::default();
-    opt_table["BinaryName"] = value("/usr/local/sbin/crun");
+    opt_table["BinaryName"] = value(full_oci_location);
     conf["plugins"]["io.containerd.grpc.v1.cri"]["containerd"]["runtimes"]["crun"] =
         Item::Table(table);
     conf["plugins"]["io.containerd.grpc.v1.cri"]["containerd"]["runtimes"]["crun"]["options"] =
@@ -244,7 +244,7 @@ mod tests {
         let old_file_contents =
             fs::read_to_string(path).expect("Should have been able to read the file");
 
-        update_crio_config(path).unwrap();
+        update_crio_config(path, "/ocr_path/crun").unwrap();
 
         let new_file_contents =
             fs::read_to_string(path).expect("Should have been able to read the new_file_contents");
@@ -279,14 +279,14 @@ mod tests {
     #[test]
     fn generate_crio_config_test() {
         let test_file = concat!(env!("CARGO_MANIFEST_DIR"), "/mocks/in_crio.conf");
-        let conf = generate_crio_config(test_file).unwrap();
+        let conf = generate_crio_config(test_file, "/ocr_path/crun").unwrap();
         assert_eq!(
             conf["crio"]["runtime"]["runtimes"]["crun"]["runtime_type"].as_str(),
             Some("oci")
         );
         assert_eq!(
             conf["crio"]["runtime"]["runtimes"]["crun"]["runtime_path"].as_str(),
-            Some("/usr/local/sbin/crun")
+            Some("/ocr_path/crun")
         );
         assert_eq!(
             conf["crio"]["runtime"]["runtimes"]["crun"]["runtime_root"].as_str(),
@@ -301,7 +301,7 @@ mod tests {
         let old_file_contents =
             fs::read_to_string(path).expect("Should have been able to read the file");
 
-        update_containerd_config(path).unwrap();
+        update_containerd_config(path, "/ocr_path/crun").unwrap();
 
         let new_file_contents =
             fs::read_to_string(path).expect("Should have been able to read the new_file_contents");
@@ -335,7 +335,7 @@ mod tests {
     #[test]
     fn generate_containerd_config_test() {
         let test_file = concat!(env!("CARGO_MANIFEST_DIR"), "/mocks/in_config.toml");
-        let conf = generate_containerd_config(test_file).unwrap();
+        let conf = generate_containerd_config(test_file, "/ocr_path/crun").unwrap();
         assert_eq!(
             conf["plugins"]["io.containerd.grpc.v1.cri"]["containerd"]["runtimes"]["crun"]
                 ["runtime_type"]
@@ -364,7 +364,7 @@ mod tests {
             conf["plugins"]["io.containerd.grpc.v1.cri"]["containerd"]["runtimes"]["crun"]
                 ["options"]["BinaryName"]
                 .as_str(),
-            Some("/usr/local/sbin/crun")
+            Some("/ocr_path/crun")
         );
     }
 }

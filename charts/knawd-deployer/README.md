@@ -40,7 +40,7 @@ If you wish to use this chart to obtain a crun enabled cluster but without knati
 
 These are the values particular to the deployer service.
 
-**target**: The type of kubernetes cluster to be configured. Supported versions are `ubuntu18`, `ubuntu20`, `microk8s` `rhel8` (default: rhel8)
+**target**: The type of kubernetes cluster to be configured. Supported versions are `ubuntu_18_04`, `ubuntu_20_04`, `microk8s` `rhel8` (default: rhel8)
 **tag**: The tag in the repository where the image is located used to specifiy a custom image  (default: latest)
 **autoRestart**: Should the deployer automatically restart the CRI service? Required for the config to be applied (default: true)
 **logLevel**: The log level. Supported options `info`, `error`, `warn`, `debug` (default: "info") 

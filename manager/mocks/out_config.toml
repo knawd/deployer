@@ -76,7 +76,7 @@ pod_annotations = [
 ]
 
 [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.crun.options]
-BinaryName = "/usr/local/sbin/crun"
+BinaryName = "/ocr_path/crun"
 
 [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.untrusted]
 runtime_type = "io.containerd.runc.v2"

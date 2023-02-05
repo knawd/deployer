@@ -10,8 +10,8 @@
                     "type": "string",
                     "enum": [
                         "rhel8",
-                        "ubuntu18",
-                        "ubuntu20",
+                        "ubuntu_20_04",
+                        "ubuntu_18_04",
                         "microk8s"
                     ],
                     "default": "rhel8"
