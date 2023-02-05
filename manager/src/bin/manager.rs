@@ -125,13 +125,14 @@ async fn main() -> Result<(), std::io::Error> {
     }
 
     manager::copy_to(VENDOR_BASE, oci_location.as_str(), &vendor, &oci_type)?;
+    let full_oci_location = format!("{oci_location}/crun");
     match vendor.as_str() {
         "rhel8" => {
             for file_name in &LIB_FILES {
                 manager::copy_to(VENDOR_BASE, lib_location.as_str(), &vendor, file_name)?;
             }
             let crio_file = format!("{config_location}/crio.conf");
-            manager::update_crio_config(crio_file.as_str())?;
+            manager::update_crio_config(crio_file.as_str(), full_oci_location.as_str())?;
             if auto_restart {
                 manager::restart_oci_runtime(node_root, is_micro_k8s, "crio".to_string())?;
             }
@@ -141,7 +142,7 @@ async fn main() -> Result<(), std::io::Error> {
                 manager::copy_to(VENDOR_BASE, lib_location.as_str(), &vendor, file_name)?
             }
             let toml_file = format!("{config_location}/config.toml");
-            manager::update_containerd_config(toml_file.as_str())?;
+            manager::update_containerd_config(toml_file.as_str(), full_oci_location.as_str())?;
             if auto_restart {
                 manager::restart_oci_runtime(node_root, is_micro_k8s, "containerd".to_string())?;
             }

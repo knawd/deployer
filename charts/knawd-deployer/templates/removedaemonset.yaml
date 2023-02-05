@@ -3,24 +3,19 @@ kind: DaemonSet
 metadata:
   name: knawd-deployer-remove-daemonset
   labels:
-    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
-    app.kubernetes.io/instance: {{ .Release.Name | quote }}
-    app.kubernetes.io/version: {{ .Chart.AppVersion }}
-    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+  {{ include "knawd-deployer.labels" . | nindent 4 }}
   annotations:
-    # This is what defines this resource as a hook. Without this line, the
-    #.daemonset.is considered part of the release.
     "helm.sh/hook": pre-delete
     "helm.sh/hook-weight": "-5"
     "helm.sh/hook-delete-policy": hook-succeeded
 spec:
   selector:
     matchLabels:
-      name: {{ .Values.daemonset.label }}
+      name:  knawd-deployer-remove-ds
   template:
     metadata:
       labels:
-        name: {{ .Values.daemonset.label }}
+        name: knawd-deployer-remove-ds
     spec:
       restartPolicy: Always
       hostPID: true
@@ -34,33 +29,42 @@ spec:
             defaultMode: 0744
       serviceAccountName: {{ include "knawd-deployer.serviceAccountName" . }}
       containers:
-        - image: {{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          name: deploy-remove
+        - image: quay.io/knawd/deployer:{{ .Values.tag }}
+          imagePullPolicy: Always
+          name: deployer-remove
           env:
             - name: VENDOR
-              value: {{ .Values.daemonset.vendor | quote }}
+              value: {{ .Values.target }}
             - name: LIB_LOCATION
-              value: {{ .Values.daemonset.libLocation | quote }}
+              value: {{ include "knawd-deployer.libLocation" . }}
             - name: LOG_LEVEL
-              value: {{ .Values.daemonset.logLevel | quote }}
+              value: {{ .Values.logLevel }}
             - name: OCI_LOCATION
-              value: {{ .Values.daemonset.ociLocation | quote }}
-            - name: OCI_NAME
-              value: {{ .Values.daemonset.ociName | quote }}
+              value: {{ include "knawd-deployer.ociLocation" . }}
+            - name: OCI_TYPE
+              value: {{ .Values.ociType }}
             - name: NODE_ROOT
-              value: {{ .Values.daemonset.nodeRoot | quote }}
+              value: {{ include "knawd-deployer.nodeRoot" . }}
             - name: IS_MICROK8S
-              value: {{ .Values.daemonset.isMicroK8s | quote }}
+              value: {{ include "knawd-deployer.isMicroK8s" . }}
             - name: AUTO_RESTART
-              value: {{ .Values.daemonset.autoRestart | quote }}
+              value: {{ .Values.autoRestart | quote }}
             - name: CONFIG_LOCATION
-              value: {{ .Values.daemonset.configLocation | quote }}
+              value: {{ include "knawd-deployer.configLocation" . }}
             - name: LOOP
               value: "true"
+            - name: PATCH_KNATIVE
+              value: {{ .Values.patchKnative | quote }}
           securityContext:
             privileged: true
           volumeMounts:
             - name: node-root
               mountPath: /mnt/node-root/
-          command: ["/app/manager","remove"]
+          command: ["/app/manager"]
+          resources:
+            limits:
+              cpu: 100m
+              memory: 128Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi

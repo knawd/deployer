@@ -54,9 +54,53 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 Create the name of the service account to use
 */}}
 {{- define "knawd-deployer.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "knawd-deployer.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
+"knawd-deployer-sa"
 {{- end }}
+
+{{/*
+Create the name of the Security Context Constraint to use
+*/}}
+{{- define "knawd-deployer.sccName" -}}
+"knawd-deployer-scc"
 {{- end }}
+
+{{/*
+Create the role name to use
+*/}}
+{{- define "knawd-deployer.roleName" -}}
+"knawd-deployer-role"
+{{- end }}
+
+{{/*
+Calculate the location for the library
+*/}}
+{{- define "knawd-deployer.libLocation" -}}
+{{- if eq .Values.target "rhel8" }}"/usr/lib64"{{- else }}"/lib"{{- end }}
+{{- end }}
+
+{{/*
+Calculate the OCI Binary
+*/}}
+{{- define "knawd-deployer.ociLocation" -}}
+"/usr/local/sbin"
+{{- end }}
+
+{{/*
+Calculate the location to mount the host route in the container
+*/}}
+{{- define "knawd-deployer.nodeRoot" -}}
+"/mnt/node-root"
+{{- end }}
+
+{{/*
+Calculate the location for configuration
+*/}}
+{{- define "knawd-deployer.configLocation" -}}
+{{- if eq .Values.target "rhel8" }}"/etc/crio"{{- else }}"/etc/containerd"{{- end}}
+{{- end }}
+
+{{- define "knawd-deployer.isMicroK8s" -}}
+{{- if eq .Values.target "microk8s" }}"true"{{- else }}"false"{{- end}}
+{{- end }}
+
+

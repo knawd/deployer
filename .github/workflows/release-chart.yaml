@@ -6,8 +6,6 @@ on:
       - main
     paths:
       - charts/**
-    paths-ignore:
-      - "**.md" 
 
 jobs:
   release:

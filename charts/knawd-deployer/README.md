@@ -10,14 +10,14 @@ If you would prefer to manually restart the CRI service run this chart with the 
 
 ```
 cd charts/knawd-deployer
-helm install knawd-deployer --create-namespace --namespace knawd .
+helm install knawd-deployer --create-namespace --namespace knawd --set target=ubuntu18 .
 ```
 
 ## Ubuntu 20.04
 
 ```
 cd charts/knawd-deployer
-helm install knawd-deployer --create-namespace --namespace knawd -f ubuntu20-values.yaml .
+helm install knawd-deployer --create-namespace --namespace knawd --set target=ubuntu20 .
 ```
 
 ## OpenShift
@@ -26,7 +26,7 @@ Red Hat Core OS based services have yet to be tested. We expect there to be some
 
 ```
 cd charts/knawd-deployer
-helm install knawd-deployer --create-namespace --namespace knawd -f rhel8-values.yaml .
+helm install knawd-deployer --create-namespace --namespace knawd .
 ```
 
 ## Knative
@@ -40,35 +40,9 @@ If you wish to use this chart to obtain a crun enabled cluster but without knati
 
 These are the values particular to the deployer service.
 
-image:
-
-  registry: The registry where the image is stored used to specifiy a custom image (default: quay.io)
-
-  repository: The repository in the registry where the image is located used to specifiy a custom image (default: knawd/deployer)
-
-  tag: The tag in the repository where the image is located used to specifiy a custom image  (default: latest)
-  pullPolicy: The pull policy for the image (default: Always)
-
-daemonset:
-
-  name: The name of the job (default: "knawd-deployer")
-
-  vendor: The type of node the job will be deployed on (default: "ubuntu_18_04")
-
-  libLocation: The location where the external WASM library will be copied to so that crun can find it (default: "/lib")
-
-  logLevel: The log level (default: "info")
-
-  ociLocation: The location on the host where the custom crun build will be placed (default: "/usr/local/sbin")
-
-  configLocation: The location of the OCI configuration on the node (default: "/etc/containerd")
-
-  ociType: The type of the OCI Runtime to deploy. Currently "crun-wasmedge" and "crun-wasmtime" are supported (default: "crun-wasmedge")
-
-  nodeRoot: The location in the deployer where the node file system is mounted (default: "/mnt/node-root")
-
-  isMicroK8s: Is this a microK8s installation (default: false)
-
-  autoRestart: Should the deployer automatically restart the CRI service? Required for the config to be applied (default: true)
-
-  patchKnative: Runs the patch to enable setting the runtime in a knative service definition.
+**target**: The type of kubernetes cluster to be configured. Supported versions are `ubuntu_18_04`, `ubuntu_20_04`, `microk8s` `rhel8` (default: rhel8)
+**tag**: The tag in the repository where the image is located used to specifiy a custom image  (default: latest)
+**autoRestart**: Should the deployer automatically restart the CRI service? Required for the config to be applied (default: true)
+**logLevel**: The log level. Supported options `info`, `error`, `warn`, `debug` (default: "info") 
+**ociType**: The type of the OCI Runtime to deploy. Currently `crun-wasmedge` and `crun-wasmtime` are supported (default: "crun-wasmedge")
+**patchKnative**: Runs the patch to enable setting the runtime in a knative service definition.

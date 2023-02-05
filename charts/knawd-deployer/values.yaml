@@ -1,54 +1,6 @@
-image:
-  registry: quay.io
-  repository: knawd/deployer
-  tag: v1.0.0-gamma
-  pullPolicy: Always
-
-daemonset:
-  name: "knawd-deployer"
-  label: "knawd-deployer-ds"
-  vendor: "ubuntu_18_04"
-  libLocation: "/lib"
-  logLevel: "info"
-  ociLocation: "/usr/local/sbin"
-  configLocation: "/etc/containerd"
-  ociType: "crun-wasmedge"
-  nodeRoot: "/mnt/node-root"
-  isMicroK8s: false
-  autoRestart: true
-  patchKnative: true
-
-scc:
-  create: false
-
-imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
-
-serviceAccount:
-  create: true
-  annotations: {}
-  name: "knawd-deployer-sa"
-
-podAnnotations: {}
-
-podSecurityContext: {}
-
-securityContext: {}
-
-resources:
-  limits:
-    cpu: 100m
-    memory: 128Mi
-  requests:
-    cpu: 100m
-    memory: 128Mi
-
-autoscaling:
-  enabled: false
-
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}
+target: rhel8
+tag: v1.0.0-theta
+autoRestart: true
+logLevel: "info"
+ociType: "crun-wasmedge"
+patchKnative: true
