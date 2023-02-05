@@ -23,6 +23,12 @@ maintainers:
     url: https://github.com/No9/
 
 annotations:
+  artifacthub.io/changes: |
+    - kind: added
+      description:  Streamline the chart options
+      links:
+        - name: GitHub PR
+          url: https://github.com/knawd/deployer/pull/7
   artifacthub.io/images: |
     - name: knawd-deployer
       image: quay.io/knawd/deployer:v1.0.0-beta
