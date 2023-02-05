@@ -37,7 +37,7 @@ jobs:
             echo "::set-output name=changed::true"
           fi
       - name: Run chart-testing (lint)
-        run: ct lint --config ct.yaml --helm-extra-set-args "--set target=ubuntu20"
+        run: ct lint --config ct.yaml
 
       - name: Create kind cluster
         uses: helm/kind-action@v1.5.0
