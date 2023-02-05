@@ -1,6 +1,6 @@
 # knawd-deployer
 
-An chart to configure a kubernetes cluster to run WASM services.
+A chart to configure a kubernetes cluster to run WASM services.
 
 ## Caution
 Installing with this helm chart will reboot the CRI runtime on the cluster.
@@ -10,14 +10,14 @@ If you would prefer to manually restart the CRI service run this chart with the 
 
 ```
 cd charts/knawd-deployer
-helm install knawd-deployer --create-namespace --namespace knawd --set target=ubuntu18 .
+helm install knawd-deployer --create-namespace --namespace knawd --set target=ubuntu_18_04 .
 ```
 
 ## Ubuntu 20.04
 
 ```
 cd charts/knawd-deployer
-helm install knawd-deployer --create-namespace --namespace knawd --set target=ubuntu20 .
+helm install knawd-deployer --create-namespace --namespace knawd --set target=ubuntu_20_04 .
 ```
 
 ## OpenShift
