@@ -42,7 +42,8 @@
                         "type": "string",
                         "enum": [
                             "crun-wasmedge",
-                            "crun-wasmtime"
+                            "crun-wasmtime",
+                            "crun-wasm-nodejs"
                         ]
                     },
                     "default": "crun-wasmedge"
