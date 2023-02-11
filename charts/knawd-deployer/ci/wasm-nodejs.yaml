@@ -1,0 +1,6 @@
+target: ubuntu_18_04
+tag: latest
+autoRestart: true
+logLevel: "info"
+ociType: "crun-wasm-nodejs"
+patchKnative: true

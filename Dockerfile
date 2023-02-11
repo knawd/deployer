@@ -151,7 +151,7 @@ RUN cargo build --release
 
 RUN cargo test --release
 
-FROM registry.access.redhat.com/ubi8:8.7-1054
+FROM registry.access.redhat.com/ubi8:8.7-1054.1675788412
 
 WORKDIR "/vendor/rhel8"
 
