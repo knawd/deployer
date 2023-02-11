@@ -5,11 +5,12 @@ use std::path::Path;
 use std::{thread, time};
 
 // keeping this incase additional libraries need copying
-static LIB_FILES: [&str; 1] = ["libwasmedge.so.0"];
 static VENDOR_BASE: &str = "vendor";
 #[allow(clippy::while_immutable_condition)]
 #[tokio::main]
 async fn main() -> Result<(), std::io::Error> {
+    let mut lib_files = vec!["libwasmedge.so.0"];
+
     // An output test so the build can be validated
     if env::args().count() >= 2 && env::args().nth(1) != Some("remove".to_string()) {
         println!("Manager 0.1 by Anton Whalley");
@@ -45,6 +46,10 @@ async fn main() -> Result<(), std::io::Error> {
     no_path_exit(&config_location);
     no_path_exit(&oci_location);
 
+    if oci_type == *"crun-wasm-nodejs" {
+        //let mut libnode = "libnode.so";
+        lib_files.push("libnode.so");
+    }
     let auto_restart = env::var("AUTO_RESTART")
         .unwrap_or_else(|_| "false".to_string())
         .to_lowercase()
@@ -75,7 +80,7 @@ async fn main() -> Result<(), std::io::Error> {
         info!("Running the remove container");
         match vendor.as_str() {
             "rhel8" => {
-                for file_name in &LIB_FILES {
+                for file_name in &lib_files {
                     let deployed_file = format!("{lib_location}/{file_name}");
                     manager::delete_file(&deployed_file)?;
                 }
@@ -90,7 +95,7 @@ async fn main() -> Result<(), std::io::Error> {
                 }
             }
             "ubuntu_20_04" | "ubuntu_18_04" => {
-                for file_name in &LIB_FILES {
+                for file_name in &lib_files {
                     let deployed_file = format!("{lib_location}/{file_name}");
                     manager::delete_file(&deployed_file)?;
                 }
@@ -128,7 +133,7 @@ async fn main() -> Result<(), std::io::Error> {
     let full_oci_location = format!("{oci_location}/crun");
     match vendor.as_str() {
         "rhel8" => {
-            for file_name in &LIB_FILES {
+            for file_name in &lib_files {
                 manager::copy_to(VENDOR_BASE, lib_location.as_str(), &vendor, file_name)?;
             }
             let crio_file = format!("{config_location}/crio.conf");
@@ -138,7 +143,7 @@ async fn main() -> Result<(), std::io::Error> {
             }
         }
         "ubuntu_20_04" | "ubuntu_18_04" => {
-            for file_name in &LIB_FILES {
+            for file_name in &lib_files {
                 manager::copy_to(VENDOR_BASE, lib_location.as_str(), &vendor, file_name)?
             }
             let toml_file = format!("{config_location}/config.toml");
