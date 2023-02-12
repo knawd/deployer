@@ -1,6 +1,0 @@
-target: ubuntu_18_04
-tag: v1.0.0-iota
-autoRestart: true
-logLevel: "info"
-ociType: "crun-wasmedge"
-patchKnative: true

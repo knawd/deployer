@@ -1,2 +1,0 @@
-target: ubuntu_18_04
-ociType: "crun-wasmtime"
