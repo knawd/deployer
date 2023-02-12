@@ -7,6 +7,7 @@
             "additionalProperties": false,
             "properties": {
                 "target": {
+                    "description": "The type of kubernetes cluster to be configured.",
                     "type": "string",
                     "enum": [
                         "rhel8",
@@ -17,20 +18,17 @@
                     "default": "rhel8"
                 },
                 "tag": {
+                    "description": "The tag in the repository where the image is located used to specifiy a custom image.",
                     "type": "string",
-                    "enum": [
-                        "v1.0.0-gamma",
-                        "v1.0.0-theta",
-                        "v1.0.0-iota",
-                        "v1.0.0-mu",
-                        "latest"
-                    ],
-                    "default": "latest"
+                    "default": "v1.0.0"
                 },
                 "autoRestart": {
-                    "type": "boolean"
+                    "description": "Flag for the deployer to automatically restart the CRI service. Required for the config to be applied",
+                    "type": "boolean",
+                    "default": true
                 },
                 "logLevel": {
+                    "description": "The log level for the daemonset",
                     "type": "string",
                     "enum": [
                         "info",
@@ -40,18 +38,19 @@
                     "default": "info"
                 },
                 "ociType": {
-                    "items": {
-                        "type": "string",
-                        "enum": [
-                            "crun-wasmedge",
-                            "crun-wasmtime",
-                            "crun-wasm-nodejs"
-                        ]
-                    },
+                    "description": "The type of the OCI Runtime and WASM Runtime to deploy",
+                    "type": "string",
+                    "enum": [
+                        "crun-wasmedge",
+                        "crun-wasmtime",
+                        "crun-wasm-nodejs"
+                    ],
                     "default": "crun-wasmedge"
                 },
                 "patchKnative": {
-                    "type": "boolean"
+                    "description": "Runs the patch to enable setting the `runtimeClassName` in a knative service definition",
+                    "type": "boolean",
+                    "default": true
                 }
             },
             "required": [
