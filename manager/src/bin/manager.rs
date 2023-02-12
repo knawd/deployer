@@ -9,7 +9,7 @@ static VENDOR_BASE: &str = "vendor";
 #[allow(clippy::while_immutable_condition)]
 #[tokio::main]
 async fn main() -> Result<(), std::io::Error> {
-    let mut lib_files = vec!["libwasmedge.so.0"];
+    let mut lib_files = vec![];
 
     // An output test so the build can be validated
     if env::args().count() >= 2 && env::args().nth(1) != Some("remove".to_string()) {
@@ -46,8 +46,14 @@ async fn main() -> Result<(), std::io::Error> {
     no_path_exit(&config_location);
     no_path_exit(&oci_location);
 
+    if oci_type == *"crun-wasmedge" {
+        lib_files.push("libwasmedge.so.0");
+    }
+    if oci_type == *"crun-wasmtime" {
+        lib_files.push("libwasmtime.so");
+    }
+
     if oci_type == *"crun-wasm-nodejs" {
-        //let mut libnode = "libnode.so";
         lib_files.push("libnode.so");
     }
     let auto_restart = env::var("AUTO_RESTART")
@@ -131,13 +137,14 @@ async fn main() -> Result<(), std::io::Error> {
 
     manager::copy_to(VENDOR_BASE, oci_location.as_str(), &vendor, &oci_type)?;
     let full_oci_location = format!("{oci_location}/crun");
+    let host_oci_location = full_oci_location.replace(&node_root, "");
     match vendor.as_str() {
         "rhel8" => {
             for file_name in &lib_files {
                 manager::copy_to(VENDOR_BASE, lib_location.as_str(), &vendor, file_name)?;
             }
             let crio_file = format!("{config_location}/crio.conf");
-            manager::update_crio_config(crio_file.as_str(), full_oci_location.as_str())?;
+            manager::update_crio_config(crio_file.as_str(), host_oci_location.as_str())?;
             if auto_restart {
                 manager::restart_oci_runtime(node_root, is_micro_k8s, "crio".to_string())?;
             }
@@ -147,7 +154,7 @@ async fn main() -> Result<(), std::io::Error> {
                 manager::copy_to(VENDOR_BASE, lib_location.as_str(), &vendor, file_name)?
             }
             let toml_file = format!("{config_location}/config.toml");
-            manager::update_containerd_config(toml_file.as_str(), full_oci_location.as_str())?;
+            manager::update_containerd_config(toml_file.as_str(), host_oci_location.as_str())?;
             if auto_restart {
                 manager::restart_oci_runtime(node_root, is_micro_k8s, "containerd".to_string())?;
             }
