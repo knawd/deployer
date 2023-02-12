@@ -22,6 +22,7 @@
                         "v1.0.0-gamma",
                         "v1.0.0-theta",
                         "v1.0.0-iota",
+                        "v1.0.0-mu",
                         "latest"
                     ],
                     "default": "latest"
