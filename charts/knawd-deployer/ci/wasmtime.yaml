@@ -1,6 +1,0 @@
-target: ubuntu_18_04
-tag: test
-autoRestart: true
-logLevel: "info"
-ociType: "crun-wasmtime"
-patchKnative: true

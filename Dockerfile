@@ -118,13 +118,13 @@ FROM registry.access.redhat.com/ubi8:8.7-1054.1675788412
 
 WORKDIR "/vendor/rhel8"
 
-COPY --from=rhel8builder /usr/local/lib/libwasmedge.so.0 /lib64/libnode.so /crun/crun-wasmedge /crun/crun-wasmtime /wasm_nodejs/crun/crun-wasm-nodejs ./
+COPY --from=rhel8builder /usr/local/lib/libwasmedge.so.0 /lib64/libnode.so /usr/local/lib/libwasmtime.so /crun/crun-wasmedge /crun/crun-wasmtime /wasm_nodejs/crun/crun-wasm-nodejs ./
 
 WORKDIR "/vendor/ubuntu_20_04"
-COPY --from=ubuntu20builder /usr/local/lib/libwasmedge.so.0 /lib64/libnode.so /crun/crun-wasmedge /crun/crun-wasmtime /wasm_nodejs/crun/crun-wasm-nodejs ./
+COPY --from=ubuntu20builder /usr/local/lib/libwasmedge.so.0 /lib64/libnode.so /usr/local/lib/libwasmtime.so /crun/crun-wasmedge /crun/crun-wasmtime /wasm_nodejs/crun/crun-wasm-nodejs ./
 
 WORKDIR "/vendor/ubuntu_18_04"
-COPY --from=ubuntu18builder /usr/local/lib/libwasmedge.so.0 /lib64/libnode.so /crun/crun-wasmedge /crun/crun-wasmtime /wasm_nodejs/crun/crun-wasm-nodejs ./
+COPY --from=ubuntu18builder /usr/local/lib/libwasmedge.so.0 /lib64/libnode.so /usr/local/lib/libwasmtime.so /crun/crun-wasmedge /crun/crun-wasmtime /wasm_nodejs/crun/crun-wasm-nodejs ./
 
 WORKDIR "/app"
 COPY --from=rhel8builder /app-build/target/release/manager ./

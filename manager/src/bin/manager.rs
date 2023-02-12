@@ -46,8 +46,11 @@ async fn main() -> Result<(), std::io::Error> {
     no_path_exit(&config_location);
     no_path_exit(&oci_location);
 
+    if oci_type == *"crun-wasmtime" {
+        lib_files.push("libwasmtime.so");
+    }
+
     if oci_type == *"crun-wasm-nodejs" {
-        //let mut libnode = "libnode.so";
         lib_files.push("libnode.so");
     }
     let auto_restart = env::var("AUTO_RESTART")
