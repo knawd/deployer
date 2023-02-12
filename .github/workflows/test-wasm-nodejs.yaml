@@ -6,7 +6,7 @@ on:
       - "**.md"
 
 jobs:
-  lint-test:
+  wasm-nodejs-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
