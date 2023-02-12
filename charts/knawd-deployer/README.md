@@ -41,7 +41,7 @@ These are the values particular to the deployer service.
 
 **target**: The type of kubernetes cluster to be configured. Supported versions are `ubuntu_18_04`, `ubuntu_20_04`, `microk8s` `rhel8` (default: rhel8)
 
-**tag**: The tag in the repository where the image is located used to specifiy a custom image  (default: latest)
+**tag**: The tag in the repository where the image is located used to specifiy a custom image  (default: the latest release branch)
 
 **autoRestart**: Should the deployer automatically restart the CRI service? Required for the config to be applied (default: true)
 
