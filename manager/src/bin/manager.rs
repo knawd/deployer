@@ -9,7 +9,7 @@ static VENDOR_BASE: &str = "vendor";
 #[allow(clippy::while_immutable_condition)]
 #[tokio::main]
 async fn main() -> Result<(), std::io::Error> {
-    let mut lib_files = vec!["libwasmedge.so.0"];
+    let mut lib_files = vec![];
 
     // An output test so the build can be validated
     if env::args().count() >= 2 && env::args().nth(1) != Some("remove".to_string()) {
@@ -46,6 +46,9 @@ async fn main() -> Result<(), std::io::Error> {
     no_path_exit(&config_location);
     no_path_exit(&oci_location);
 
+    if oci_type == *"crun-wasmedge" {
+        lib_files.push("libwasmedge.so.0");
+    }
     if oci_type == *"crun-wasmtime" {
         lib_files.push("libwasmtime.so");
     }
