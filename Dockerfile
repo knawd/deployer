@@ -3,7 +3,7 @@ FROM quay.io/knawd/libnode:ubuntu18 as ubuntu18builder
 ENV WASMTIME_VERSION=v5.0.0
 RUN curl https://raw.githubusercontent.com/WasmEdge/WasmEdge/master/utils/install.sh | bash -s -- -e all -p /usr/local --version=0.11.2
 WORKDIR /
-RUN git clone --depth 1 --recursive https://github.com/containers/crun.git
+RUN git clone --depth 1 -b 1.8 --recursive https://github.com/containers/crun.git
 WORKDIR /crun
 
 RUN ./autogen.sh
@@ -38,7 +38,7 @@ FROM quay.io/knawd/libnode:ubuntu20 as ubuntu20builder
 ENV WASMTIME_VERSION=v5.0.0
 RUN curl https://raw.githubusercontent.com/WasmEdge/WasmEdge/master/utils/install.sh | bash -s -- -e all -p /usr/local --version=0.11.2
 WORKDIR /
-RUN git clone --depth 1 --recursive https://github.com/containers/crun.git
+RUN git clone --depth 1 -b 1.8 --recursive https://github.com/containers/crun.git
 WORKDIR /crun
 RUN ./autogen.sh
 RUN ./configure --with-wasmedge --enable-embedded-yajl
@@ -74,7 +74,7 @@ RUN curl -sSf https://raw.githubusercontent.com/WasmEdge/WasmEdge/master/utils/i
 RUN dnf install -y systemd-devel yajl-devel libseccomp-devel pkg-config libgcrypt-devel \
     glibc-static python3-libmount libtool libcap-devel
 WORKDIR /
-RUN git clone --depth 1 --recursive https://github.com/containers/crun.git
+RUN git clone --depth 1 -b 1.8 --recursive https://github.com/containers/crun.git
 WORKDIR /crun
 
 RUN ./autogen.sh
