@@ -31,18 +31,22 @@ helm install knawd-deployer --create-namespace --namespace knawd .
 
 ## Knative
 
-```
 By default patching knative is enabled. If knative is not installed on the cluster this service will log an error but continue to run
 If you wish to use this chart to obtain a crun enabled cluster but without knative running use `-set daemonset.patchKnative=false`.
-```
+
 
 ## Values
 
 These are the values particular to the deployer service.
 
 **target**: The type of kubernetes cluster to be configured. Supported versions are `ubuntu_18_04`, `ubuntu_20_04`, `microk8s` `rhel8` (default: rhel8)
+
 **tag**: The tag in the repository where the image is located used to specifiy a custom image  (default: latest)
+
 **autoRestart**: Should the deployer automatically restart the CRI service? Required for the config to be applied (default: true)
+
 **logLevel**: The log level. Supported options `info`, `error`, `warn`, `debug` (default: "info") 
+
 **ociType**: The type of the OCI Runtime to deploy. Currently `crun-wasmedge`, `crun-wasmtime` and `crun-wasm-nodejs` are supported (default: "crun-wasmedge")
+
 **patchKnative**: Runs the patch to enable setting the runtime in a knative service definition.
