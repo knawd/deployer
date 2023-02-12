@@ -45,9 +45,6 @@ jobs:
 
       - name: Run chart-testing (install)
         run: ct install --config ct.yaml --helm-extra-set-args "--set target=ubuntu_18_04"
-      
-      - name: Create kind wasmtime cluster
-        uses: helm/kind-action@v1.5.0
-        if: steps.list-changed.outputs.changed == 'true'
+
       - name: Run chart-testing (install wasmtime)
         run: ct install --config ct.yaml --helm-extra-set-args "--set target=ubuntu_18_04 --set ociType=crun-wasmtime"
