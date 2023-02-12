@@ -36,6 +36,40 @@ entries:
     - https://github.com/knawd/deployer/releases/download/v1.0.0-theta/knawd-deployer-v1.0.0-theta.tgz
     version: v1.0.0-theta
   - annotations:
+      artifacthub.io/changes: |
+        - kind: added
+          description:  Streamline builds and support for wasm nodejs
+          links:
+            - name: GitHub PR
+              url: https://github.com/knawd/deployer/pull/8
+      artifacthub.io/images: |
+        - name: knawd-deployer
+          image: quay.io/knawd/deployer:v1.0.0-mu
+      artifacthub.io/license: MIT
+      artifacthub.io/signKey: |
+        fingerprint: BED079E67FD431E45301B1C9949E671B46AC8A34
+        url: https://keybase.io/antonwhalley/pgp_keys.asc
+    apiVersion: v2
+    appVersion: v1.0.0-mu
+    created: "2023-02-12T17:22:50.81694457Z"
+    description: A helm chart to deploy a WASI enabled crun.
+    digest: 2b0b00ea192ea1c0335da6794957d2e9cf731cf9dc146c2bf8e2e9790b3df522
+    keywords:
+    - wasi
+    - wasm
+    - crun
+    maintainers:
+    - email: anton@venshare.com
+      name: No9
+      url: https://github.com/No9/
+    name: knawd-deployer
+    sources:
+    - https://github.com/uirlis/wasi-core-deployer
+    type: application
+    urls:
+    - https://github.com/knawd/deployer/releases/download/v1.0.0-mu/knawd-deployer-v1.0.0-mu.tgz
+    version: v1.0.0-mu
+  - annotations:
       artifacthub.io/images: |
         - name: knawd-deployer
           image: quay.io/knawd/deployer:v1.0.0-beta
@@ -63,4 +97,4 @@ entries:
     urls:
     - https://github.com/knawd/deployer/releases/download/v1.0.0-gamma/knawd-deployer-v1.0.0-gamma.tgz
     version: v1.0.0-gamma
-generated: "2023-02-05T23:01:09.649994173Z"
+generated: "2023-02-12T17:22:50.81695737Z"
