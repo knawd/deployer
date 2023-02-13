@@ -15,7 +15,7 @@ version: v1.0.0
 
 appVersion: "v1.0.0"
 
-# icon: https://raw.githubusercontent.com/No9/core-dump-handler/master/assets/handle-with-care-svgrepo-com.svg
+icon: https://raw.githubusercontent.com/knawd/documentation/main/icons/cookie-bite-icon.svg
 
 maintainers:
   - name: No9

@@ -48,3 +48,6 @@ jobs:
 
       - name: Run chart-testing (install wasmtime)
         run: ct install --config ct.yaml --helm-extra-set-args "--set target=ubuntu_18_04 --set ociType=crun-wasmtime"
+
+      - name: Run chart-testing (install nodejs)
+        run: ct install --config ct.yaml --helm-extra-set-args "--set target=ubuntu_18_04 --set ociType=crun-wasm-nodejs"
