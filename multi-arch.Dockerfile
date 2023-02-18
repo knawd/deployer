@@ -109,13 +109,13 @@ RUN  microdnf update && microdnf install -y procps-ng
 
 WORKDIR "/vendor/rhel8"
 
-COPY --from=rhel8builder /usr/local/lib/libwasmedge.so.0 /lib64/libnode.so /usr/local/lib/libwasmtime.so /crun/crun-wasmedge /crun/crun-wasmtime /wasm_nodejs/crun/crun-wasm-nodejs ./
+COPY --from=rhel8builder /usr/local/lib/libwasmedge.so.0 /usr/local/lib/libwasmtime.so /crun/crun-wasmedge /crun/crun-wasmtime ./
 
 WORKDIR "/vendor/ubuntu_20_04"
-COPY --from=ubuntu20builder /usr/local/lib/libwasmedge.so.0 /lib64/libnode.so /usr/local/lib/libwasmtime.so /crun/crun-wasmedge /crun/crun-wasmtime /wasm_nodejs/crun/crun-wasm-nodejs ./
+COPY --from=ubuntu20builder /usr/local/lib/libwasmedge.so.0 /usr/local/lib/libwasmtime.so /crun/crun-wasmedge /crun/crun-wasmtime ./
 
 WORKDIR "/vendor/ubuntu_18_04"
-COPY --from=ubuntu18builder /usr/local/lib/libwasmedge.so.0 /lib64/libnode.so /usr/local/lib/libwasmtime.so /crun/crun-wasmedge /crun/crun-wasmtime /wasm_nodejs/crun/crun-wasm-nodejs ./
+COPY --from=ubuntu18builder /usr/local/lib/libwasmedge.so.0 /usr/local/lib/libwasmtime.so /crun/crun-wasmedge /crun/crun-wasmtime ./
 
 WORKDIR "/app"
 COPY --from=ubi9build /app-build/target/release/manager ./
