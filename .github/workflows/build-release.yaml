@@ -25,15 +25,14 @@ jobs:
       - name: Checkout Push to Registry action
         uses: actions/checkout@v2
       - id: tag
-        run: echo ::set-output name=TAG::${GITHUB_REF#refs/tags/}
-
+        run: echo "TAG=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
       - name: Install qemu dependency
         run: |
           sudo apt-get update
           sudo apt-get install -y qemu-user-static
       - name: Build Image
         id: build_image
-        uses: redhat-actions/buildah-build@v2.12
+        uses: redhat-actions/buildah-build@v2.11
         with:
           image: ${{ env.IMAGE_NAME }}
           tags: ${{ steps.tag.outputs.TAG }}-linux-${{ matrix.arch }}
