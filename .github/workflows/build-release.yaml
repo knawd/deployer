@@ -33,7 +33,7 @@ jobs:
           sudo apt-get install -y qemu-user-static
       - name: Build Image
         id: build_image
-        uses: redhat-actions/buildah-build@main
+        uses: redhat-actions/buildah-build@v2.12
         with:
           image: ${{ env.IMAGE_NAME }}
           tags: ${{ steps.tag.outputs.TAG }}-linux-${{ matrix.arch }}
