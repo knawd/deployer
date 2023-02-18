@@ -30,7 +30,7 @@ spec:
           name: deploy
           env:
             - name: VENDOR
-              value: {{ .Values.target }}
+              value: {{ include "knawd-deployer.calculated-vendor" . }}
             - name: LIB_LOCATION
               value: {{ include "knawd-deployer.libLocation" . }}
             - name: LOG_LEVEL

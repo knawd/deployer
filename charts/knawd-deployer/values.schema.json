@@ -20,7 +20,7 @@
                 "tag": {
                     "description": "The tag in the repository where the image is located used to specifiy a custom image.",
                     "type": "string",
-                    "default": "v1.0.0"
+                    "default": "v1.1.0"
                 },
                 "autoRestart": {
                     "description": "Flag for the deployer to automatically restart the CRI service. Required for the config to be applied",
