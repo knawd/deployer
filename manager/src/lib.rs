@@ -40,6 +40,7 @@ pub fn update_containerd_config(
     full_oci_location: &str,
 ) -> Result<toml_edit::Document, std::io::Error> {
     let conf = generate_containerd_config(path, full_oci_location)?;
+    info!("Successfully generated CRI config for containerd");
     let value: toml_edit::easy::Value =
         toml_edit::easy::from_str(conf.to_string().as_str()).unwrap();
     let result = toml_edit::easy::to_string_pretty(&value).unwrap();
@@ -53,6 +54,7 @@ pub fn update_containerd_config(
         .open(path)?;
     f.write_all(result.as_bytes())?;
     f.flush()?;
+    info!("Wrote CRI config for containerd");
     Ok(conf)
 }
 
@@ -62,7 +64,7 @@ pub fn update_crio_config(
 ) -> Result<toml_edit::Document, std::io::Error> {
     info!("Generating crio config");
     let conf = generate_crio_config(path, full_oci_location)?;
-
+    info!("Successfully generated CRI config for crio");
     let value: toml_edit::easy::Value =
         toml_edit::easy::from_str(conf.to_string().as_str()).unwrap();
     let result = toml_edit::easy::to_string_pretty(&value).unwrap();
@@ -76,6 +78,7 @@ pub fn update_crio_config(
         .open(path)?;
     f.write_all(result.as_bytes())?;
     f.flush()?;
+    info!("Wrote CRI config for crio");
     Ok(conf)
 }
 

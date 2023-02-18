@@ -105,11 +105,21 @@ async fn main() -> Result<(), std::io::Error> {
                     let deployed_file = format!("{lib_location}/{file_name}");
                     manager::delete_file(&deployed_file)?;
                 }
-                let toml_file = format!("{config_location}/config.toml");
+                let toml_file = if is_micro_k8s {
+                    format!("{config_location}/containerd-template.toml")
+                } else {
+                    format!("{config_location}/config.toml")
+                };
+
                 manager::restore_containerd_config(toml_file.as_str())?;
                 let oci_file = format!("{oci_location}/crun");
                 manager::delete_file(&oci_file)?;
-                let oci_bak = format!("{config_location}/config.toml.bak");
+                let oci_bak = if is_micro_k8s {
+                    format!("{config_location}/containerd-template.toml.bak")
+                } else {
+                    format!("{config_location}/config.toml.bak")
+                };
+
                 manager::delete_file(&oci_bak)?;
 
                 if auto_restart {
@@ -143,7 +153,9 @@ async fn main() -> Result<(), std::io::Error> {
             for file_name in &lib_files {
                 manager::copy_to(VENDOR_BASE, lib_location.as_str(), &vendor, file_name)?;
             }
+
             let crio_file = format!("{config_location}/crio.conf");
+            info!("Editing CRI config: {crio_file}");
             manager::update_crio_config(crio_file.as_str(), host_oci_location.as_str())?;
             if auto_restart {
                 manager::restart_oci_runtime(node_root, is_micro_k8s, "crio".to_string())?;
@@ -155,10 +167,11 @@ async fn main() -> Result<(), std::io::Error> {
             }
 
             let toml_file = if is_micro_k8s {
-                format!("{config_location}/containerd.toml")
+                format!("{config_location}/containerd-template.toml")
             } else {
                 format!("{config_location}/config.toml")
             };
+            info!("Editing CRI config: {toml_file}");
             manager::update_containerd_config(toml_file.as_str(), host_oci_location.as_str())?;
             if auto_restart {
                 manager::restart_oci_runtime(node_root, is_micro_k8s, "containerd".to_string())?;
