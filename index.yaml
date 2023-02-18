@@ -4,6 +4,41 @@ entries:
   - annotations:
       artifacthub.io/changes: |
         - kind: added
+          description:  Support for microk8s
+          links:
+            - name: GitHub PR
+              url: https://github.com/knawd/deployer/pull/12
+      artifacthub.io/images: |
+        - name: knawd-deployer
+          image: quay.io/knawd/deployer:v1.1.0
+      artifacthub.io/license: MIT
+      artifacthub.io/signKey: |
+        fingerprint: BED079E67FD431E45301B1C9949E671B46AC8A34
+        url: https://keybase.io/antonwhalley/pgp_keys.asc
+    apiVersion: v2
+    appVersion: v1.1.0
+    created: "2023-02-18T11:12:43.112557582Z"
+    description: A helm chart to deploy a WASI enabled crun.
+    digest: c6f81b757ce795f17a48a9edcda60bc5d5959c8748fc36906237147b2084b972
+    icon: https://raw.githubusercontent.com/knawd/documentation/main/icons/cookie-6116766.svg
+    keywords:
+    - wasi
+    - wasm
+    - crun
+    maintainers:
+    - email: anton@venshare.com
+      name: No9
+      url: https://github.com/No9/
+    name: knawd-deployer
+    sources:
+    - https://github.com/uirlis/wasi-core-deployer
+    type: application
+    urls:
+    - https://github.com/knawd/deployer/releases/download/v1.1.0/knawd-deployer-v1.1.0.tgz
+    version: v1.1.0
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: added
           description:  Schema alignment
           links:
             - name: GitHub PR
@@ -131,4 +166,4 @@ entries:
     urls:
     - https://github.com/knawd/deployer/releases/download/v1.0.0-gamma/knawd-deployer-v1.0.0-gamma.tgz
     version: v1.0.0-gamma
-generated: "2023-02-12T23:32:57.64565857Z"
+generated: "2023-02-18T11:12:43.112679582Z"
