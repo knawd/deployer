@@ -87,6 +87,12 @@ RUN make
 RUN ./crun --version
 RUN mv crun crun-wasmtime
 
+FROM registry.access.redhat.com/ubi9 as ubi9build
+
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
+
+ENV PATH=/root/.cargo/bin:${PATH}
+
 COPY manager /app-build/
 
 WORKDIR "/app-build"
@@ -95,7 +101,7 @@ RUN cargo build --release
 
 RUN cargo test --release
 
-FROM registry.access.redhat.com/ubi8:8.7-1054.1675788412
+FROM registry.access.redhat.com/ubi9
 
 WORKDIR "/vendor/rhel8"
 
@@ -108,7 +114,7 @@ WORKDIR "/vendor/ubuntu_18_04"
 COPY --from=ubuntu18builder /usr/local/lib/libwasmedge.so.0 /lib64/libnode.so /usr/local/lib/libwasmtime.so /crun/crun-wasmedge /crun/crun-wasmtime /wasm_nodejs/crun/crun-wasm-nodejs ./
 
 WORKDIR "/app"
-COPY --from=rhel8builder /app-build/target/release/manager ./
+COPY --from=ubi9build /app-build/target/release/manager ./
 
 RUN /app/manager version
 
