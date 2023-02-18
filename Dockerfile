@@ -109,7 +109,7 @@ WORKDIR "/vendor/rhel8"
 COPY --from=rhel8builder /usr/local/lib/libwasmedge.so.0 /usr/local/lib/libwasmtime.so /crun/crun-wasmedge /crun/crun-wasmtime ./
 
 WORKDIR "/vendor/ubuntu_20_04"
-COPY --from=ubuntu20builder /usr/local/lib/libwasmedge.so.0 /usr/local/lib/libwasmtime.so /crun/crun-wasmedge /crun/crun-wasmtime ./
+COPY --from=ubuntu20builder /usr/local/lib/libwasmedge.so.0 /usr/local/lib64/libwasmtime.so /crun/crun-wasmedge /crun/crun-wasmtime ./
 
 WORKDIR "/vendor/ubuntu_18_04"
 COPY --from=ubuntu18builder /usr/local/lib/libwasmedge.so.0 /usr/local/lib/libwasmtime.so /crun/crun-wasmedge /crun/crun-wasmtime ./
