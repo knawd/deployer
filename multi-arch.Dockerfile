@@ -1,30 +1,30 @@
-FROM ubuntu:18.04 as ubuntu18builder
+# FROM ubuntu:18.04 as ubuntu18builder
 
-ENV DEBIAN_FRONTEND=noninteractive
-ENV TZ=Etc/UTC
-ENV WASMTIME_VERSION=v5.0.0
-RUN apt-get update
-RUN apt-get install -y curl g++ make git gcc build-essential pkgconf libtool libsystemd-dev libprotobuf-c-dev libcap-dev libseccomp-dev libyajl-dev go-md2man libtool autoconf python3 automake xz-utils
+# ENV DEBIAN_FRONTEND=noninteractive
+# ENV TZ=Etc/UTC
+# ENV WASMTIME_VERSION=v5.0.0
+# RUN apt-get update
+# RUN apt-get install -y curl g++ make git gcc build-essential pkgconf libtool libsystemd-dev libprotobuf-c-dev libcap-dev libseccomp-dev libyajl-dev go-md2man libtool autoconf python3 automake xz-utils
 
-ENV WASMTIME_VERSION=v5.0.0
-RUN curl https://raw.githubusercontent.com/WasmEdge/WasmEdge/master/utils/install.sh | bash -s -- -e all -p /usr/local --version=0.11.2
-WORKDIR /
-RUN git clone --depth 1 -b 1.8 --recursive https://github.com/containers/crun.git
-WORKDIR /crun
+# ENV WASMTIME_VERSION=v5.0.0
+# RUN curl https://raw.githubusercontent.com/WasmEdge/WasmEdge/master/utils/install.sh | bash -s -- -e all -p /usr/local --version=0.11.2
+# WORKDIR /
+# RUN git clone --depth 1 -b 1.8 --recursive https://github.com/containers/crun.git
+# WORKDIR /crun
 
-RUN ./autogen.sh
-RUN ./configure --with-wasmedge --enable-embedded-yajl
-RUN make
-# RUN ./crun --version
-RUN mv crun crun-wasmedge
+# RUN ./autogen.sh
+# RUN ./configure --with-wasmedge --enable-embedded-yajl
+# RUN make
+# # RUN ./crun --version
+# RUN mv crun crun-wasmedge
 
-RUN curl -L https://github.com/bytecodealliance/wasmtime/releases/download/${WASMTIME_VERSION}/wasmtime-${WASMTIME_VERSION}-$(uname -m)-linux-c-api.tar.xz | tar xJf - -C /
-RUN cp -R /wasmtime-${WASMTIME_VERSION}-$(uname -m)-linux-c-api/* /usr/local/
-WORKDIR /crun
-RUN ./configure --with-wasmtime --enable-embedded-yajl
-RUN make
-# RUN ./crun --version
-RUN mv crun crun-wasmtime
+# RUN curl -L https://github.com/bytecodealliance/wasmtime/releases/download/${WASMTIME_VERSION}/wasmtime-${WASMTIME_VERSION}-$(uname -m)-linux-c-api.tar.xz | tar xJf - -C /
+# RUN cp -R /wasmtime-${WASMTIME_VERSION}-$(uname -m)-linux-c-api/* /usr/local/
+# WORKDIR /crun
+# RUN ./configure --with-wasmtime --enable-embedded-yajl
+# RUN make
+# # RUN ./crun --version
+# RUN mv crun crun-wasmtime
 
 FROM ubuntu:20.04 as ubuntu20builder
 
@@ -114,8 +114,8 @@ COPY --from=rhel8builder /usr/local/lib/libwasmedge.so.0 /usr/local/lib/libwasmt
 WORKDIR "/vendor/ubuntu_20_04"
 COPY --from=ubuntu20builder /usr/local/lib/libwasmedge.so.0 /usr/local/lib/libwasmtime.so /crun/crun-wasmedge /crun/crun-wasmtime ./
 
-WORKDIR "/vendor/ubuntu_18_04"
-COPY --from=ubuntu18builder /usr/local/lib/libwasmedge.so.0 /usr/local/lib/libwasmtime.so /crun/crun-wasmedge /crun/crun-wasmtime ./
+# WORKDIR "/vendor/ubuntu_18_04"
+# COPY --from=ubuntu18builder /usr/local/lib/libwasmedge.so.0 /usr/local/lib/libwasmtime.so /crun/crun-wasmedge /crun/crun-wasmtime ./
 
 WORKDIR "/app"
 COPY --from=ubi9build /app-build/target/release/manager ./
