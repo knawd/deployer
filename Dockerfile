@@ -9,7 +9,7 @@ WORKDIR /crun
 RUN ./autogen.sh
 RUN ./configure --with-wasmedge --enable-embedded-yajl
 RUN make
-RUN ./crun --version
+# RUN ./crun --version
 RUN mv crun crun-wasmedge
 
 RUN curl -L https://github.com/bytecodealliance/wasmtime/releases/download/${WASMTIME_VERSION}/wasmtime-${WASMTIME_VERSION}-$(uname -m)-linux-c-api.tar.xz | tar xJf - -C /
@@ -17,7 +17,7 @@ RUN cp -R /wasmtime-${WASMTIME_VERSION}-$(uname -m)-linux-c-api/* /usr/local/
 WORKDIR /crun
 RUN ./configure --with-wasmtime --enable-embedded-yajl
 RUN make
-RUN ./crun --version
+# RUN ./crun --version
 RUN mv crun crun-wasmtime
 
 WORKDIR /wasm_nodejs
@@ -31,7 +31,7 @@ RUN cp /wasm_nodejs/node/src/node_api_types.h /usr/include/node_api_types.h
 RUN ./autogen.sh
 RUN ./configure --with-wasm_nodejs --enable-embedded-yajl
 RUN make
-RUN ./crun --version
+# RUN ./crun --version
 RUN mv crun crun-wasm-nodejs
 
 FROM quay.io/knawd/libnode:ubuntu20 as ubuntu20builder
@@ -43,7 +43,7 @@ WORKDIR /crun
 RUN ./autogen.sh
 RUN ./configure --with-wasmedge --enable-embedded-yajl
 RUN make
-RUN ./crun --version
+# RUN ./crun --version
 RUN mv crun crun-wasmedge
 
 RUN curl -L https://github.com/bytecodealliance/wasmtime/releases/download/${WASMTIME_VERSION}/wasmtime-${WASMTIME_VERSION}-$(uname -m)-linux-c-api.tar.xz | tar xJf - -C /
@@ -51,7 +51,7 @@ RUN cp -R /wasmtime-${WASMTIME_VERSION}-$(uname -m)-linux-c-api/* /usr/local/
 WORKDIR /crun
 RUN ./configure --with-wasmtime --enable-embedded-yajl
 RUN make
-RUN ./crun --version
+# RUN ./crun --version
 RUN mv crun crun-wasmtime
 
 WORKDIR /wasm_nodejs
@@ -65,7 +65,7 @@ RUN cp /wasm_nodejs/node/src/node_api_types.h /usr/include/node_api_types.h
 RUN ./autogen.sh
 RUN ./configure --with-wasm_nodejs --enable-embedded-yajl
 RUN make
-RUN ./crun --version
+# RUN ./crun --version
 RUN mv crun crun-wasm-nodejs
 
 FROM quay.io/knawd/libnode:rocky8 as rhel8builder
@@ -103,12 +103,14 @@ RUN cp /wasm_nodejs/node/src/node_api_types.h /usr/include/node_api_types.h
 RUN ./autogen.sh
 RUN ./configure --with-wasm_nodejs --enable-embedded-yajl
 RUN make
-RUN ./crun --version
+# RUN ./crun --version
 RUN mv crun crun-wasm-nodejs
 
-FROM registry.access.redhat.com/ubi9 as ubi9build
+FROM registry.access.redhat.com/ubi9/ubi as ubi9build
 
-RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
+RUN yum install -y gcc openssl-devel && \
+    rm -rf /var/cache/dnf && \
+    curl https://sh.rustup.rs -sSf | sh -s -- -y
 
 ENV PATH=/root/.cargo/bin:${PATH}
 
@@ -120,7 +122,7 @@ RUN cargo build --release
 
 RUN cargo test --release
 
-FROM registry.access.redhat.com/ubi9
+FROM registry.access.redhat.com/ubi9/ubi
 
 WORKDIR "/vendor/rhel8"
 

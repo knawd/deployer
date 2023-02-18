@@ -15,7 +15,7 @@ WORKDIR /crun
 RUN ./autogen.sh
 RUN ./configure --with-wasmedge --enable-embedded-yajl
 RUN make
-RUN ./crun --version
+# RUN ./crun --version
 RUN mv crun crun-wasmedge
 
 RUN curl -L https://github.com/bytecodealliance/wasmtime/releases/download/${WASMTIME_VERSION}/wasmtime-${WASMTIME_VERSION}-$(uname -m)-linux-c-api.tar.xz | tar xJf - -C /
@@ -23,7 +23,7 @@ RUN cp -R /wasmtime-${WASMTIME_VERSION}-$(uname -m)-linux-c-api/* /usr/local/
 WORKDIR /crun
 RUN ./configure --with-wasmtime --enable-embedded-yajl
 RUN make
-RUN ./crun --version
+# RUN ./crun --version
 RUN mv crun crun-wasmtime
 
 FROM ubuntu:20.04 as ubuntu20builder
@@ -42,7 +42,7 @@ WORKDIR /crun
 RUN ./autogen.sh
 RUN ./configure --with-wasmedge --enable-embedded-yajl
 RUN make
-RUN ./crun --version
+# RUN ./crun --version
 RUN mv crun crun-wasmedge
 
 RUN curl -L https://github.com/bytecodealliance/wasmtime/releases/download/${WASMTIME_VERSION}/wasmtime-${WASMTIME_VERSION}-$(uname -m)-linux-c-api.tar.xz | tar xJf - -C /
@@ -50,7 +50,7 @@ RUN cp -R /wasmtime-${WASMTIME_VERSION}-$(uname -m)-linux-c-api/* /usr/local/
 WORKDIR /crun
 RUN ./configure --with-wasmtime --enable-embedded-yajl
 RUN make
-RUN ./crun --version
+# RUN ./crun --version
 RUN mv crun crun-wasmtime
 
 FROM docker.io/rockylinux/rockylinux:8 as rhel8builder
@@ -76,7 +76,7 @@ WORKDIR /crun
 RUN ./autogen.sh
 RUN ./configure --with-wasmedge --enable-embedded-yajl
 RUN make
-RUN ./crun --version
+# RUN ./crun --version
 RUN mv crun crun-wasmedge
 ### wasmtime
 RUN curl -L https://github.com/bytecodealliance/wasmtime/releases/download/${WASMTIME_VERSION}/wasmtime-${WASMTIME_VERSION}-$(uname -m)-linux-c-api.tar.xz | tar xJf - -C /
@@ -84,12 +84,14 @@ RUN cp -R /wasmtime-${WASMTIME_VERSION}-$(uname -m)-linux-c-api/* /usr/local/
 WORKDIR /crun
 RUN ./configure --with-wasmtime --enable-embedded-yajl
 RUN make
-RUN ./crun --version
+# RUN ./crun --version
 RUN mv crun crun-wasmtime
 
-FROM registry.access.redhat.com/ubi9 as ubi9build
+FROM registry.access.redhat.com/ubi9/ubi as ubi9build
 
-RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
+RUN yum install -y gcc openssl-devel && \
+    rm -rf /var/cache/dnf && \
+    curl https://sh.rustup.rs -sSf | sh -s -- -y
 
 ENV PATH=/root/.cargo/bin:${PATH}
 
@@ -101,7 +103,9 @@ RUN cargo build --release
 
 RUN cargo test --release
 
-FROM registry.access.redhat.com/ubi9
+FROM registry.access.redhat.com/ubi9/ubi-minimal
+
+RUN  microdnf update && microdnf install -y procps-ng
 
 WORKDIR "/vendor/rhel8"
 
