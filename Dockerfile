@@ -1,4 +1,4 @@
-ARG ARCH=x86_64
+ARG REMOTE_ARCH=x86_64
 FROM ubuntu:18.04 as ubuntu18builder
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -26,8 +26,8 @@ RUN make
 RUN mv crun crun-wasmtime
 
 FROM ubuntu:20.04 as ubuntu20builder
-ARG ARCH
-RUN echo https://github.com/WasmEdge/WasmEdge/releases/download/0.11.2/WasmEdge-0.11.2-manylinux2014_${ARCH}.tar.xz
+ARG REMOTE_ARCH
+RUN echo https://github.com/WasmEdge/WasmEdge/releases/download/0.11.2/WasmEdge-0.11.2-manylinux2014_${REMOTE_ARCH}.tar.xz
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Etc/UTC
 RUN apt-get dist-upgrade

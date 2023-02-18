@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        arch: [ amd64, aarch64 ]
+        arch: [ amd64, arm64 ]
 
     steps:
       # Checkout push-to-registry action github repository
@@ -30,6 +30,13 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y qemu-user-static
+      - name: Determine Checkout Depth
+        uses: haya14busa/action-cond@v1
+        id: remotearch
+        with:
+          cond: ${{ matrix.arch == 'arm64' }}
+          if_true: 'aarch64'
+          if_false: 'x86_64'
       - name: Build Image
         id: build_image
         uses: redhat-actions/buildah-build@v2.12
@@ -37,7 +44,7 @@ jobs:
           image: ${{ env.IMAGE_NAME }}
           tags: ${{ steps.tag.outputs.TAG }}-linux-${{ matrix.arch }}
           arch: ${{ matrix.arch }}
-          build-args: ARCH=${{ matrix.arch }}
+          build-args: REMOTE_ARCH=${{ steps.remotearch.outputs.value }}
           containerfiles: |
             ./Dockerfile
       - name: Push To Quay
@@ -62,6 +69,6 @@ jobs:
           docker manifest create \
             ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAMESPACE }}/${{env.IMAGE_NAME}}:${{ steps.tag.outputs.TAG }}  \
             ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAMESPACE }}/${{env.IMAGE_NAME}}:${{ steps.tag.outputs.TAG }}-linux-amd64 \
-            ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAMESPACE }}/${{env.IMAGE_NAME}}:${{ steps.tag.outputs.TAG }}-linux-aarch64
+            ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAMESPACE }}/${{env.IMAGE_NAME}}:${{ steps.tag.outputs.TAG }}-linux-arm64
       - run: docker manifest push ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAMESPACE }}/${{env.IMAGE_NAME}}:${{ steps.tag.outputs.TAG }}
 
