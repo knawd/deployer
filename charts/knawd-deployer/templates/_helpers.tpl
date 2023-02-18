@@ -96,11 +96,16 @@ Calculate the location to mount the host route in the container
 Calculate the location for configuration
 */}}
 {{- define "knawd-deployer.configLocation" -}}
-{{- if eq .Values.target "rhel8" }}"/etc/crio"{{- else }}"/etc/containerd"{{- end}}
+{{- if eq .Values.target "rhel8" }}"/etc/crio"{{- else }}{{- if eq .Values.target "microk8s" }}"/var/snap/microk8s/current/args"{{- else}}"/etc/containerd"{{- end}}{{- end}}
 {{- end }}
 
 {{- define "knawd-deployer.isMicroK8s" -}}
 {{- if eq .Values.target "microk8s" }}"true"{{- else }}"false"{{- end}}
 {{- end }}
 
-
+{{/*
+Calculate the vendor
+*/}}
+{{- define "knawd-deployer.calculated-vendor" -}}
+{{- if eq .Values.target "microk8s" }}"ubuntu_20_04"{{- else }}{{.Values.target}}{{- end}}
+{{- end }}

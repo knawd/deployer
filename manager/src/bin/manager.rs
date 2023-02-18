@@ -153,7 +153,12 @@ async fn main() -> Result<(), std::io::Error> {
             for file_name in &lib_files {
                 manager::copy_to(VENDOR_BASE, lib_location.as_str(), &vendor, file_name)?
             }
-            let toml_file = format!("{config_location}/config.toml");
+
+            let toml_file = if is_micro_k8s {
+                format!("{config_location}/containerd.toml")
+            } else {
+                format!("{config_location}/config.toml")
+            };
             manager::update_containerd_config(toml_file.as_str(), host_oci_location.as_str())?;
             if auto_restart {
                 manager::restart_oci_runtime(node_root, is_micro_k8s, "containerd".to_string())?;
