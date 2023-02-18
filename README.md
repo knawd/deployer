@@ -31,9 +31,9 @@ The deployment is performed copying files to 3 locations on each node:
 
 ## Supported Versions
 
-|Release|WASMEdge|WASMtime|node-wasm|crun|Ubuntu|OpenShift|
-|---|---|---|---|---|---|---|
-|v1.0.0|0.11.2|5.0.0|[experiment](https://github.com/mhdawson/crun/commit/23f346e3bc15ec7e6188b405df895aef5a5cbcdd)|[1.8](https://github.com/containers/crun/releases/tag/1.8)|18.04, 20.04|4.10, 4.11|
+|Release|WASMEdge|WASMtime|node-wasm|crun|Ubuntu|OpenShift|microk8s|
+|---|---|---|---|---|---|---|---|
+|v1.0.0|0.11.2|5.0.0|[experiment](https://github.com/mhdawson/crun/commit/23f346e3bc15ec7e6188b405df895aef5a5cbcdd)|[1.8](https://github.com/containers/crun/releases/tag/1.8)|18.04, 20.04|4.10, 4.11|1.26.1|
 
 N.B. Red Hat Core OS based instances have still to be tested and we expect some issues modifying the crio config and copying the WASM libs to the host.
 

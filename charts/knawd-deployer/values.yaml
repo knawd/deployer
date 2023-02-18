@@ -1,5 +1,5 @@
 target: rhel8
-tag: microk8s
+tag: v1.1.0
 autoRestart: true
 logLevel: "info"
 ociType: "crun-wasmedge"
