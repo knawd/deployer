@@ -1,4 +1,4 @@
-name: Build and Push Multi Arch
+name: Build and Push Containers
 
 on:
   push:
