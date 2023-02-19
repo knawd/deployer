@@ -2,8 +2,10 @@ name: Build and Push Multi Arch
 
 on:
   push:
-    branch:
+    branches:
       - 'pre-v*'
+    paths-ignore:
+      - "**.md"
 
 env:
   IMAGE_NAME: deployer

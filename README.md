@@ -37,7 +37,9 @@ The container copies files to 3 locations on each node, restarts the container r
 ### Secuirty Considerations
 
 * The daemonset requires access to the host OS and uses the hostpid to restart the host runtimes
+
 * A cluster role is used to update config maps
+
 * It's strongly recommended that no other workloads are deployed into the same namespace
 
 ## Supported Versions
