@@ -50,3 +50,7 @@ These are the values particular to the deployer service.
 **ociType**: The type of the OCI Runtime to deploy. Currently `crun-wasmedge`, `crun-wasmtime` and `crun-wasm-nodejs` are supported (default: "crun-wasmedge")
 
 **patchKnative**: Runs the patch to enable setting the runtime in a knative service definition.
+
+## Uninstall
+
+Performs a rollback of the CRI configuration as well as deleting the deployed files from the host.
