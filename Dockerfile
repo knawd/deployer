@@ -102,7 +102,7 @@ RUN cargo test --release
 
 FROM registry.access.redhat.com/ubi9/ubi-minimal
 
-RUN  microdnf update && microdnf install -y procps-ng
+RUN  microdnf update && microdnf install -y procps-ng util-linux
 
 WORKDIR "/vendor/rhel8"
 
