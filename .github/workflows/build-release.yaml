@@ -25,7 +25,7 @@ jobs:
       - name: Checkout Push to Registry action
         uses: actions/checkout@v3
       - id: tag
-        run: echo "TAG=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
+        run: echo "TAG=${GITHUB_REF#refs/heads/pre-}" >> $GITHUB_OUTPUT
       - name: Install qemu dependency
         run: |
           sudo apt-get update

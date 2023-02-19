@@ -11,9 +11,9 @@ sources:
 
 type: application
 
-version: v1.1.0
+version: v1.2.0
 
-appVersion: "v1.1.0"
+appVersion: "v1.2.0"
 
 icon: https://raw.githubusercontent.com/knawd/documentation/main/icons/cookie-6116766.svg
 
@@ -25,13 +25,13 @@ maintainers:
 annotations:
   artifacthub.io/changes: |
     - kind: added
-      description:  Support for microk8s
+      description:  Support for arm64
       links:
         - name: GitHub PR
-          url: https://github.com/knawd/deployer/pull/12
+          url: https://github.com/knawd/deployer/pull/14
   artifacthub.io/images: |
     - name: knawd-deployer
-      image: quay.io/knawd/deployer:v1.1.0
+      image: quay.io/knawd/deployer:v1.2.0
   artifacthub.io/license: MIT
   artifacthub.io/signKey: |
     fingerprint: BED079E67FD431E45301B1C9949E671B46AC8A34
