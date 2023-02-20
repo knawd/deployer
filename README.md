@@ -50,9 +50,9 @@ The container copies files to 3 locations on each node, restarts the container r
 |v1.2.0|0.11.2|5.0.0|[experiment](https://github.com/mhdawson/crun/commit/23f346e3bc15ec7e6188b405df895aef5a5cbcdd)|[1.8](https://github.com/containers/crun/releases/tag/1.8)|
 
 ### Kubernetes Versions
-|Ubuntu|OpenShift|microk8s|
-|---|---|---|
-|18.04, 20.04|4.10, 4.11|1.26.1|
+|Ubuntu|OpenShift|microk8s|microshift|
+|---|---|---|---|
+|18.04, 20.04|4.10, 4.11|1.26.1|4.12|
 
 N.B. Red Hat Core OS based instances have still to be tested and we expect some issues modifying the crio config and copying the WASM libs to the host.
 
