@@ -56,6 +56,13 @@ The container copies files to 3 locations on each node, restarts the container r
 
 N.B. Red Hat Core OS based instances have still to be tested and we expect some issues modifying the crio config and copying the WASM libs to the host.
 
+### CPU Architectures
+|amd64|arm64|ppc64|
+|---|---|---|
+|:green_circle:|:green_circle:|:red_circle:|
+
+N.B. Work on [nodejs-wasm](https://github.com/knawd/deployer/pull/11) may provide support for ppc64. 
+
 ## Contributions
 
 Please read the [CONTRIBUTING.md](CONTRIBUTING.md) it has some important notes.
