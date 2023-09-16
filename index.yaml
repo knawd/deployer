@@ -4,6 +4,41 @@ entries:
   - annotations:
       artifacthub.io/changes: |
         - kind: added
+          description:  Support for nn in wasmedge
+          links:
+            - name: GitHub PR
+              url: https://github.com/knawd/deployer/pull/15
+      artifacthub.io/images: |
+        - name: knawd-deployer
+          image: quay.io/knawd/deployer:v1.3.0
+      artifacthub.io/license: MIT
+      artifacthub.io/signKey: |
+        fingerprint: BED079E67FD431E45301B1C9949E671B46AC8A34
+        url: https://keybase.io/antonwhalley/pgp_keys.asc
+    apiVersion: v2
+    appVersion: v1.3.0
+    created: "2023-09-16T18:43:43.60759892Z"
+    description: A helm chart to deploy a WASI enabled crun.
+    digest: 94803ad7e9f70b66cb32103a976fefaa43ea123907db395ab31a2b9b83f215b5
+    icon: https://raw.githubusercontent.com/knawd/documentation/main/icons/cookie-6116766.svg
+    keywords:
+    - wasi
+    - wasm
+    - crun
+    maintainers:
+    - email: anton@venshare.com
+      name: No9
+      url: https://github.com/No9/
+    name: knawd-deployer
+    sources:
+    - https://github.com/uirlis/wasi-core-deployer
+    type: application
+    urls:
+    - https://github.com/knawd/deployer/releases/download/v1.3.0/knawd-deployer-v1.3.0.tgz
+    version: v1.3.0
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: added
           description:  Support for arm64
           links:
             - name: GitHub PR
@@ -201,4 +236,4 @@ entries:
     urls:
     - https://github.com/knawd/deployer/releases/download/v1.0.0-gamma/knawd-deployer-v1.0.0-gamma.tgz
     version: v1.0.0-gamma
-generated: "2023-02-19T19:40:19.842466245Z"
+generated: "2023-09-16T18:43:43.60763052Z"
