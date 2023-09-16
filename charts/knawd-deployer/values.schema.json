@@ -13,7 +13,8 @@
                         "rhel8",
                         "ubuntu_20_04",
                         "ubuntu_18_04",
-                        "microk8s"
+                        "microk8s",
+                        "rhel8_plugins"
                     ],
                     "default": "rhel8"
                 },
