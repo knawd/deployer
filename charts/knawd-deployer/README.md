@@ -39,7 +39,7 @@ If you wish to use this chart to obtain a crun enabled cluster but without knati
 
 These are the values particular to the deployer service.
 
-**target**: The type of kubernetes cluster to be configured. Supported versions are `ubuntu_18_04`, `ubuntu_20_04`, `microk8s` `rhel8` (default: rhel8)
+**target**: The type of kubernetes cluster to be configured. Supported versions are `ubuntu_18_04`, `ubuntu_20_04`, `microk8s` `rhel8` `rhel8_plugins`(default: rhel8). If rhel8_plugins is selected then ociType **must** be `crun-wasmedge`
 
 **tag**: The tag in the repository where the image is located used to specifiy a custom image  (default: the latest release branch)
 
@@ -49,7 +49,7 @@ These are the values particular to the deployer service.
 
 **ociType**: The type of the OCI Runtime to deploy. Currently `crun-wasmedge`, `crun-wasmtime` and `crun-wasm-nodejs` are supported (default: "crun-wasmedge")
 
-**patchKnative**: Runs the patch to enable setting the runtime in a knative service definition.
+**patchKnative**: Runs the patch to enable setting the runtime in a knative service definition.(default: true)
 
 ## Uninstall
 

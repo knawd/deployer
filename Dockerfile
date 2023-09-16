@@ -84,6 +84,32 @@ RUN make
 # RUN ./crun --version
 RUN mv crun crun-wasmtime
 
+
+FROM docker.io/rockylinux/rockylinux:8 as rhel8_plugins
+RUN dnf update -y
+RUN dnf install -y dnf-plugins-core
+RUN dnf config-manager --set-enabled plus
+RUN dnf config-manager --set-enabled devel
+RUN dnf config-manager --set-enabled powertools
+RUN dnf clean all
+RUN dnf update -y
+RUN dnf repolist --all
+RUN dnf -y install epel-release
+
+RUN dnf install -y git python3 which redhat-lsb-core gcc-c++ gcc
+ENV WASMTIME_VERSION=v5.0.0
+RUN curl -sSf https://raw.githubusercontent.com/WasmEdge/WasmEdge/master/utils/install.sh | bash -s -- -e all -p /usr/local --version=0.11.2
+RUN dnf install -y systemd-devel yajl-devel libseccomp-devel pkg-config libgcrypt-devel \
+    glibc-static python3-libmount libtool libcap-devel
+WORKDIR /
+RUN git clone --depth 1 -b enable_plugin --recursive https://github.com/hydai/crun
+WORKDIR /crun
+
+RUN ./autogen.sh
+RUN ./configure --with-wasmedge --enable-embedded-yajl
+RUN make
+RUN mv crun crun-wasmedge
+
 FROM registry.access.redhat.com/ubi9/ubi as ubi9build
 
 RUN yum install -y gcc openssl-devel && \
@@ -113,6 +139,10 @@ COPY --from=ubuntu20builder /usr/local/lib64/libwasmedge.so.0 /usr/local/lib/lib
 
 WORKDIR "/vendor/ubuntu_18_04"
 COPY --from=ubuntu18builder /usr/local/lib/libwasmedge.so.0 /usr/local/lib/libwasmtime.so /crun/crun-wasmedge /crun/crun-wasmtime ./
+
+WORKDIR "/vendor/rhel8_plugins"
+COPY --from=rhel8_plugins /usr/local/lib/libwasmedge.so.0 /usr/local/lib/libwasmtime.so /crun/crun-wasmedge ./
+
 
 WORKDIR "/app"
 COPY --from=ubi9build /app-build/target/release/manager ./
