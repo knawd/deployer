@@ -20,6 +20,7 @@ Please see the instructions in [the helm chart README](https://github.com/knawd/
 
 ## Topology
 ![topology](https://raw.githubusercontent.com/knawd/documentation/af55ffa06a1d9c69dd827dca5991872dbde8dcc5/scenarios/images/topology.png)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fknawd%2Fdeployer.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fknawd%2Fdeployer?ref=badge_shield)
 
 
 The node configuration is preformed by a container deployed on each node by the daemonset. 
@@ -81,3 +82,7 @@ We pledge to act and interact in ways that contribute to an open, welcoming,
 diverse, inclusive, and healthy community.
 
 [The full code of conduct is available here](./code-of-conduct.md)
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fknawd%2Fdeployer.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fknawd%2Fdeployer?ref=badge_large)
